@@ -1,0 +1,619 @@
+/* ======================================================
+   0. TIPOGRAFÍA PERSONALIZADA
+====================================================== */
+@font-face{
+  font-family:'SquidGame';
+  src:url('/fonts/GameOfSquids.woff') format('woff');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
+
+/* ======================================================
+   1. RESET / BLINDAJE GLOBAL
+====================================================== */
+*,
+*::before,
+*::after{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+html,body{
+  margin:0;
+  padding:0;
+  overflow-x:hidden;
+}
+
+body{
+  background:#000 !important;
+  color:#fff !important;
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  text-rendering:optimizeLegibility;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+img{
+  max-width:100%;
+  display:block;
+}
+
+a,a:visited,a:hover,a:active{
+  color:#fff !important;
+  text-decoration:none !important;
+}
+
+/* ======================================================
+   2. FONDO LOBBY
+====================================================== */
+.bg-elite{
+   position: fixed;
+   inset: 0;
+   width: 100vw;
+   height: 100%;   /* 🔥 CAMBIO CLAVE */
+   background: url('/img/lobby.jpg') center center / cover no-repeat;
+   opacity: .42;
+   z-index: -2;
+}
+
+.overlay-elite{
+   position: fixed;
+   inset: 0;
+   pointer-events: none; /* 🔥 evita interferencias */
+   background:
+      radial-gradient(circle at center, transparent 20%, rgba(0,0,0,.6) 100%),
+      linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5));
+   z-index: -1;
+}
+
+/* ======================================================
+   3. EFECTOS SISTEMA
+====================================================== */
+.state-interference{
+  filter:contrast(1.08) brightness(.96);
+  animation:subtle-shake 5s infinite;
+}
+
+.state-critical{
+  filter:grayscale(.35) sepia(.15) contrast(1.22);
+  position:relative;
+}
+
+.state-critical::after{
+  content:"ALERTA: VECTORES INESTABLES";
+  position:fixed;
+  top:10px;
+  right:10px;
+  padding:6px 10px;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:1px;
+  color:#ff004d;
+  background:rgba(0,0,0,.75);
+  border:1px solid rgba(255,0,77,.35);
+  z-index:1001;
+  animation:pulse-fast .55s infinite;
+}
+
+.state-coma{
+  filter:grayscale(1) invert(.9) blur(2px);
+  pointer-events:none;
+  user-select:none;
+}
+
+@keyframes subtle-shake{
+  0%,100%{transform:translate(0,0);}
+  25%{transform:translate(1px,-1px);}
+  75%{transform:translate(-1px,1px);}
+}
+
+@keyframes pulse-fast{
+  0%,100%{opacity:1;}
+  50%{opacity:.35;}
+}
+
+/* ======================================================
+   4. FRASE DIVISORA TOP PREMIUM
+====================================================== */
+.survival-banner{
+  width:100%;
+  padding:52px 20px;
+  text-align:center;
+  overflow:hidden;
+  position:relative;
+
+  background:
+    radial-gradient(circle at center, rgba(0,90,255,.12), transparent 55%),
+    linear-gradient(
+      to bottom,
+      rgba(0,22,55,.96),
+      rgba(0,38,82,.96),
+      rgba(0,14,35,.98)
+    );
+
+  border-top:1px solid rgba(255,0,70,.24);
+  border-bottom:1px solid rgba(255,0,70,.24);
+
+  box-shadow:
+    inset 0 10px 30px rgba(255,255,255,.03),
+    inset 0 -10px 30px rgba(0,0,0,.45),
+    0 0 25px rgba(0,120,255,.08);
+}
+
+.survival-banner::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.05),
+    transparent
+  );
+  animation:scanLight 6s linear infinite;
+}
+
+.survival-banner::after{
+  content:"";
+  position:absolute;
+  left:0;
+  top:50%;
+  width:100%;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,0,70,.8),
+    transparent
+  );
+  opacity:.45;
+}
+
+.banner-line{
+  width:160px;
+  height:2px;
+  margin:auto;
+  background:linear-gradient(90deg,transparent,#ff0040,transparent);
+  position:relative;
+  z-index:2;
+}
+
+.banner-line.top{margin-bottom:18px;}
+.banner-line.bottom{margin-top:18px;}
+
+.banner-text{
+  position:relative;
+  z-index:2;
+  color:#fff;
+  font-size:clamp(18px,2.3vw,32px);
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  line-height:1.4;
+
+  text-shadow:
+    0 0 8px rgba(255,255,255,.10),
+    0 0 15px rgba(0,120,255,.25),
+    0 0 28px rgba(0,120,255,.15);
+}
+
+.banner-text span{
+  display:block;
+  margin-top:10px;
+  color:#ff0040;
+  font-size:clamp(22px,3vw,42px);
+
+  text-shadow:
+    0 0 10px rgba(255,0,70,.45),
+    0 0 20px rgba(255,0,70,.35),
+    0 0 35px rgba(255,0,70,.25);
+}
+
+/* ======================================================
+   5. DIVIDER PREMIUM
+====================================================== */
+.ps5-divider{
+  position:relative;
+  width:100%;
+  padding:55px 20px;
+  overflow:hidden;
+
+  background:linear-gradient(
+    180deg,
+    rgba(8,8,8,.96),
+    rgba(18,18,18,.98),
+    rgba(8,8,8,.96)
+  );
+
+  border-top:1px solid rgba(255,255,255,.05);
+  border-bottom:1px solid rgba(255,255,255,.05);
+  backdrop-filter:blur(10px);
+}
+
+.glass-shine{
+  position:absolute;
+  top:0;
+  left:-40%;
+  width:40%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.08),
+    transparent
+  );
+  transform:skewX(-25deg);
+  animation:shineMove 7s linear infinite;
+}
+
+.energy-line{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:2px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    #ff0040,
+    transparent
+  );
+  opacity:.85;
+}
+
+.ps5-inner{
+  position:relative;
+  z-index:3;
+  text-align:center;
+  max-width:1000px;
+  margin:auto;
+}
+
+.ps5-label{
+  font-size:11px;
+  letter-spacing:6px;
+  color:#666;
+  margin-bottom:12px;
+  text-transform:uppercase;
+}
+
+.ps5-text{
+  font-size:clamp(24px,3vw,42px);
+  font-weight:700;
+  color:#fff;
+  text-transform:uppercase;
+}
+
+.ps5-highlight{
+  margin-top:10px;
+  font-size:clamp(18px,2vw,28px);
+  font-weight:600;
+  color:#ff0040;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  text-shadow:0 0 12px rgba(255,0,64,.35);
+}
+
+/* ======================================================
+   6. CARRUSEL PREMIUM (MEJORADO)
+====================================================== */
+.intel-carousel{
+  width:100%;
+  max-width:1400px;
+  height:520px;
+
+  margin:52px auto 0 auto; /* aire arriba */
+
+  overflow:hidden;
+  border-radius:22px;
+  position:relative;
+  background:transparent;
+
+  box-shadow:
+    0 28px 75px rgba(0,0,0,.48),
+    0 0 35px rgba(0,120,255,.08);
+
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.intel-carousel::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:linear-gradient(
+    to bottom,
+    rgba(255,255,255,.07),
+    transparent 18%,
+    transparent 82%,
+    rgba(0,0,0,.24)
+  );
+  z-index:2;
+}
+
+.intel-carousel::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:22px;
+  box-shadow:inset 0 0 30px rgba(255,255,255,.04);
+  pointer-events:none;
+  z-index:3;
+}
+
+.slides-track{
+  display:flex;
+  width:400%;
+  height:100%;
+  animation:intelPremium 36s infinite ease-in-out;
+}
+
+.slides-track img{
+  width:25%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  flex-shrink:0;
+}
+
+.intel-carousel:hover .slides-track{
+  animation-play-state:paused;
+}
+
+/* ======================================================
+   7. TEXTO DE GANADORES (MEJORADO)
+====================================================== */
+.winner-strip{
+  width:100%;
+  margin-top:0px;
+  padding:46px 20px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+
+  background:
+    radial-gradient(circle at center, rgba(0,120,255,.12), transparent 58%),
+    linear-gradient(
+      to bottom,
+      rgba(0,23,55,.96),
+      rgba(0,38,82,.96),
+      rgba(0,14,35,.98)
+    );
+
+  border-top:1px solid rgba(255,255,255,.08);
+  border-bottom:1px solid rgba(255,255,255,.08);
+
+  box-shadow:
+    inset 0 10px 30px rgba(255,255,255,.02),
+    inset 0 -10px 30px rgba(0,0,0,.30),
+    0 0 25px rgba(0,120,255,.08);
+}
+
+.winner-strip::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.04),
+    transparent
+  );
+  animation:scanLight 7s linear infinite;
+}
+
+.winner-strip::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:0;
+  width:100%;
+  height:1px;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(0,170,255,.35),
+    transparent
+  );
+}
+
+.winner-strip p{
+  position:relative;
+  z-index:2;
+  margin:auto;
+  max-width:1450px;
+  color:#fff;
+  font-size:clamp(18px,2vw,31px);
+  font-weight:900;
+  line-height:1.65;
+  letter-spacing:.4px;
+  text-shadow:
+    0 0 12px rgba(0,0,0,.22),
+    0 0 18px rgba(0,120,255,.08);
+}
+
+.winner-strip strong{
+  color:#00ff88;
+  text-shadow:
+    0 0 10px rgba(0,255,136,.35),
+    0 0 20px rgba(0,255,136,.18);
+}
+
+/* ======================================================
+   ANIMACIONES
+====================================================== */
+@keyframes shineMove{
+  0%{left:-45%;}
+  100%{left:130%;}
+}
+
+@keyframes scanLight{
+  0%{transform:translateX(-100%);}
+  100%{transform:translateX(100%);}
+}
+
+@keyframes intelPremium{
+  0%,20%{transform:translateX(0%);}
+  25%,45%{transform:translateX(-25%);}
+  50%,70%{transform:translateX(-50%);}
+  75%,95%{transform:translateX(-75%);}
+  100%{transform:translateX(0%);}
+}
+
+/* ======================================================
+   MOBILE
+====================================================== */
+@media(max-width:768px){
+
+  .intel-carousel{
+    height:260px;
+    margin:30px auto 0 auto;
+    border-radius:14px;
+  }
+
+  .slides-track img{
+    width:25%;
+  }
+
+  .banner-line{
+    width:90px;
+  }
+
+  .survival-banner{
+    padding:34px 16px;
+  }
+
+  .banner-text{
+    line-height:1.35;
+  }
+
+  .ps5-divider{
+    padding:38px 14px;
+  }
+
+  .winner-strip{
+    margin-top:28px;
+    padding:28px 16px;
+  }
+
+  .winner-strip p{
+    font-size:18px;
+    line-height:1.55;
+  }
+}
+/* ======================================================
+   MANUAL DEL JUEGO - NUEVA SECCIÓN
+====================================================== */
+
+.manual-section{
+   position: relative;
+   z-index: 20;
+   padding: 40px 5vw 70px;
+   margin-top: 0;
+   min-height: auto;
+   background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.15),
+      rgba(0,0,0,0.45)
+   );
+}
+
+.manual-title{
+  text-align:center;
+  margin-bottom:55px;
+}
+
+.manual-title h2{
+  font-size:clamp(30px,4vw,58px);
+  font-weight:900;
+  letter-spacing:2px;
+  color:#fff;
+  text-transform:uppercase;
+}
+
+.manual-title span{
+  display:block;
+  margin-top:10px;
+  font-size:12px;
+  letter-spacing:7px;
+  color:#00b7ff;
+}
+
+.manual-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.manual-card{
+  padding:20px;
+  border-radius:14px;
+  background:rgba(0,0,0,.55);
+  border:1px solid rgba(255,255,255,.05);
+  transition:.25s ease;
+  min-height:180px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+
+.manual-card:hover{
+  transform:translateY(-3px);
+  border-color:rgba(0,183,255,.45);
+  box-shadow:0 6px 18px rgba(0,120,255,.10);
+}
+
+.manual-step{
+  font-size:12px;
+  color:#00b7ff;
+  font-weight:800;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+
+.manual-card h3{
+  font-size:22px;
+  margin-bottom:12px;
+  color:#fff;
+}
+
+.manual-card p{
+  color:rgba(255,255,255,.72);
+  line-height:1.7;
+  font-size:15px;
+}
+
+.manual-highlight{
+  margin-top:14px;
+  color:#00ff88;
+  font-weight:700;
+}
+
+@media(max-width:1000px){
+  .manual-grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+
+@media(max-width:700px){
+  .manual-grid{
+    grid-template-columns:1fr;
+  }
+
+  .manual-section{
+    padding:60px 18px;
+  }
+
+  .manual-card{
+    padding:22px;
+  }
+
+  .manual-title h2{
+    font-size:32px;
+  }
+}
