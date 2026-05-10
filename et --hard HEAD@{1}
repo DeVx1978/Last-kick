@@ -1,0 +1,14 @@
+[33m46bc651[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: reset: moving to HEAD~1
+[33mbf943d9[m HEAD@{1}: commit: LiveMatches reparado y parser estable
+[33m46bc651[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{2}: commit: base estable - modulos separados funcionando
+[33ma044d70[m HEAD@{3}: commit: restaurar version estable pre-responsive
+[33md043504[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{4}: reset: moving to HEAD
+[33md043504[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{5}: Branch: renamed refs/heads/main to refs/heads/main
+[33md043504[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{7}: commit: first commit
+[33mca1d6cd[m HEAD@{8}: reset: moving to ca1d6cd
+[33m41a8fa1[m HEAD@{9}: reset: moving to HEAD
+[33m41a8fa1[m HEAD@{10}: commit (merge): Resolver conflictos de fusión
+[33mca1d6cd[m HEAD@{11}: commit: ultima actualizacion
+[33m74db86a[m HEAD@{12}: commit: ultimos cambios
+[33md1272fd[m HEAD@{13}: Branch: renamed refs/heads/master to refs/heads/main
+[33md1272fd[m HEAD@{15}: commit (initial): first commit
