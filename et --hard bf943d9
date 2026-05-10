@@ -1,0 +1,15 @@
+[33m5ccbe75[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{Sun May 10 13:58:04 2026}: commit: backup version estable funcionando homepage
+[33m46bc651[m HEAD@{Sun May 10 09:39:38 2026}: reset: moving to HEAD~1
+[33mbf943d9[m HEAD@{Sat May 9 23:23:53 2026}: commit: LiveMatches reparado y parser estable
+[33m46bc651[m HEAD@{Sat May 9 09:53:25 2026}: commit: base estable - modulos separados funcionando
+[33ma044d70[m HEAD@{Sat May 9 09:23:00 2026}: commit: restaurar version estable pre-responsive
+[33md043504[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{Sat May 9 09:21:04 2026}: reset: moving to HEAD
+[33md043504[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{Tue May 5 17:01:53 2026}: Branch: renamed refs/heads/main to refs/heads/main
+[33md043504[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{Tue May 5 17:01:43 2026}: commit: first commit
+[33mca1d6cd[m HEAD@{Tue May 5 16:57:02 2026}: reset: moving to ca1d6cd
+[33m41a8fa1[m HEAD@{Tue May 5 16:53:18 2026}: reset: moving to HEAD
+[33m41a8fa1[m HEAD@{Tue May 5 16:40:01 2026}: commit (merge): Resolver conflictos de fusión
+[33mca1d6cd[m HEAD@{Tue May 5 15:28:56 2026}: commit: ultima actualizacion
+[33m74db86a[m HEAD@{Sat May 2 12:31:03 2026}: commit: ultimos cambios
+[33md1272fd[m HEAD@{Sat May 2 12:17:01 2026}: Branch: renamed refs/heads/master to refs/heads/main
+[33md1272fd[m HEAD@{Sat May 2 12:16:37 2026}: commit (initial): first commit

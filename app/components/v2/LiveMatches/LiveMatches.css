@@ -1,0 +1,606 @@
+ @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Orbitron:wght@400;600;700;900&display=swap');
+
+  /* ── Contenedor general ─────────────────────── */
+  .ps5-section {
+    position: relative;
+    z-index: 20;
+    padding: 100px 0 80px;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  /* ── Fondo animado con partículas ─────────────── */
+  .ps5-bg-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 20% 50%, rgba(0,200,83,0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 30%, rgba(0,176,255,0.04) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 100%, rgba(255,0,51,0.03) 0%, transparent 50%);
+  }
+
+  /* Grid de líneas tipo HUD */
+  .ps5-grid-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,200,83,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,200,83,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.6) 0%, transparent 75%);
+  }
+
+  /* Orbes flotantes */
+  .ps5-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(60px);
+    animation: ps5OrbFloat 8s ease-in-out infinite alternate;
+    z-index: 0;
+  }
+  .ps5-orb-1 {
+    width: 400px; height: 400px;
+    background: rgba(0,200,83,0.06);
+    top: -100px; left: -100px;
+    animation-delay: 0s;
+  }
+  .ps5-orb-2 {
+    width: 350px; height: 350px;
+    background: rgba(0,176,255,0.05);
+    bottom: -80px; right: -80px;
+    animation-delay: -3s;
+  }
+  .ps5-orb-3 {
+    width: 300px; height: 300px;
+    background: rgba(255,0,51,0.04);
+    top: 40%; left: 50%;
+    transform: translateX(-50%);
+    animation-delay: -5s;
+  }
+  @keyframes ps5OrbFloat {
+    from { transform: translate(0, 0) scale(1); }
+    to   { transform: translate(20px, 30px) scale(1.1); }
+  }
+
+  /* ── Header ─────────────────────────────────── */
+  .ps5-header {
+    position: relative;
+    z-index: 10;
+    padding: 0 5vw 60px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .ps5-header-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    letter-spacing: 6px;
+    color: #00C853;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .ps5-header-tag::before {
+    content: '';
+    width: 28px; height: 1px;
+    background: #00C853;
+    box-shadow: 0 0 8px #00C853;
+  }
+  .ps5-header-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #00C853;
+    box-shadow: 0 0 8px #00C853;
+    animation: ps5Pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes ps5Pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .ps5-main-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    line-height: 0.95;
+    margin: 0;
+    text-shadow: 0 0 40px rgba(0,200,83,0.15);
+  }
+  .ps5-main-title span {
+    color: #00C853;
+    text-shadow: 0 0 25px rgba(0,200,83,0.5);
+  }
+  .ps5-header-desc {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(13px, 1.2vw, 16px);
+    color: rgba(255,255,255,0.45);
+    max-width: 420px;
+    line-height: 1.65;
+    font-weight: 400;
+    margin-top: 16px;
+  }
+  .ps5-header-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .ps5-hstat {
+    text-align: right;
+  }
+  .ps5-hstat-val {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 700;
+    color: #00C853;
+    line-height: 1;
+    text-shadow: 0 0 15px rgba(0,200,83,0.4);
+  }
+  .ps5-hstat-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ── Carrusel PS5 ──────────────────────────── */
+  .ps5-carousel-wrap {
+    position: relative;
+    z-index: 10;
+    padding: 0 5vw;
+  }
+
+  /* Track scrollable */
+  .ps5-track-outer {
+    overflow: hidden;
+    position: relative;
+  }
+  .ps5-track-outer::before,
+  .ps5-track-outer::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .ps5-track-outer::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.5), transparent);
+  }
+  .ps5-track-outer::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(0,0,0,0.5), transparent);
+  }
+
+  .ps5-track {
+    display: flex;
+    gap: 16px;
+    padding: 20px 4px 28px;
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+
+  /* ── Card de torneo (estilo PS5 game tile) ──── */
+  .ps5-card {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 270px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 0.35s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    filter: brightness(0.55) saturate(0.7);
+    outline: none;
+  }
+  .ps5-card:focus-visible {
+    box-shadow: 0 0 0 3px var(--card-accent, #00C853);
+  }
+  /* Card activa (la del centro enfocada) */
+  .ps5-card.active {
+    transform: scale(1.12) translateY(-8px);
+    filter: brightness(1) saturate(1);
+    z-index: 5;
+  }
+  .ps5-card.neighbor {
+    transform: scale(1.04) translateY(-3px);
+    filter: brightness(0.78) saturate(0.85);
+    z-index: 3;
+  }
+  .ps5-card:hover:not(.active) {
+    filter: brightness(0.75) saturate(0.9);
+    transform: scale(1.06) translateY(-4px);
+  }
+
+  /* Fondo de la card */
+  .ps5-card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
+  }
+  .ps5-card.active .ps5-card-bg {
+    transform: scale(1.05);
+  }
+
+  /* Overlay degradado interno de la card */
+  .ps5-card-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.92) 100%);
+  }
+
+  /* Borde de acento cuando está activo */
+  .ps5-card-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    border: 1.5px solid transparent;
+    transition: border-color 0.35s, box-shadow 0.35s;
+    pointer-events: none;
+  }
+  .ps5-card.active .ps5-card-border {
+    border-color: var(--card-accent, #00C853);
+    box-shadow:
+      0 0 20px var(--card-glow, rgba(0,200,83,0.4)),
+      inset 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  /* Contenido dentro de la card */
+  .ps5-card-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px 14px 18px;
+    z-index: 2;
+  }
+  .ps5-card-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-family: 'Orbitron', monospace;
+    font-size: 7px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    background: var(--card-accent, #00C853);
+    color: #000;
+  }
+  .ps5-card-badge.status-ACTIVO { background: #00C853; color: #000; }
+  .ps5-card-badge.status-PRÓXIMO { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.2); }
+  .ps5-card-badge.status-FINALIZADO { background: rgba(255,0,51,0.3); color: rgba(255,100,100,0.9); border: 1px solid rgba(255,0,51,0.3); }
+  .ps5-card-emoji {
+    font-size: 28px;
+    display: block;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.8));
+  }
+  .ps5-card-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+  }
+  .ps5-card-sub {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+  }
+
+  /* Indicador de selección en la parte de arriba de la card activa */
+  .ps5-card-top-indicator {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--card-accent, #00C853);
+    box-shadow: 0 0 10px var(--card-glow, rgba(0,200,83,0.5));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .ps5-card.active .ps5-card-top-indicator { opacity: 1; }
+
+  /* ── Botones de navegación ─────────────────── */
+  .ps5-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50%;
+    backdrop-filter: blur(8px);
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ps5-nav-btn:hover {
+    background: rgba(0,200,83,0.15);
+    border-color: #00C853;
+    box-shadow: 0 0 16px rgba(0,200,83,0.25);
+  }
+  .ps5-nav-left { left: -10px; }
+  .ps5-nav-right { right: -10px; }
+
+  /* ── Dots / indicadores ───────────────────── */
+  .ps5-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 20px;
+  }
+  .ps5-dot {
+    width: 6px; height: 6px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: width 0.3s ease, background 0.3s ease;
+  }
+  .ps5-dot.active {
+    width: 20px;
+    background: #00C853;
+    box-shadow: 0 0 8px rgba(0,200,83,0.6);
+  }
+
+  /* ── Panel de detalle del torneo seleccionado ── */
+  .ps5-detail-panel {
+    position: relative;
+    z-index: 10;
+    margin: 48px 5vw 0;
+    border: 1px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+  .ps5-detail-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--panel-accent, #00C853), transparent);
+    box-shadow: 0 0 12px var(--panel-glow, rgba(0,200,83,0.4));
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+  .ps5-detail-inner {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 32px;
+    padding: 32px 40px;
+  }
+  .ps5-detail-icon {
+    font-size: 52px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+    animation: ps5IconBounce 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes ps5IconBounce {
+    from { transform: scale(0.7) translateY(10px); opacity: 0; }
+    to   { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .ps5-detail-name {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .ps5-detail-sub {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .ps5-detail-stats {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+  }
+  .ps5-dstat-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .ps5-dstat-val {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-weight: 700;
+    color: var(--panel-accent, #00C853);
+    text-shadow: 0 0 15px var(--panel-glow, rgba(0,200,83,0.4));
+    transition: color 0.4s, text-shadow 0.4s;
+  }
+  .ps5-detail-action {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-end;
+  }
+  .ps5-btn-enter {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: var(--panel-accent, #00C853);
+    border: none;
+    color: #000;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    box-shadow: 0 0 20px var(--panel-glow, rgba(0,200,83,0.3));
+    white-space: nowrap;
+  }
+  .ps5-btn-enter:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 30px var(--panel-glow, rgba(0,200,83,0.5));
+    filter: brightness(1.1);
+  }
+  .ps5-btn-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.55);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .ps5-btn-info:hover {
+    border-color: rgba(255,255,255,0.4);
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* ── Controles de teclado HUD ─────────────── */
+  .ps5-controls-hint {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .ps5-hint-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.2);
+    text-transform: uppercase;
+  }
+  .ps5-hint-key {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 3px;
+    font-family: 'Orbitron', monospace;
+    font-size: 8px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ── Franja inferior descripción LAST KICK ── */
+  .ps5-footer-strip {
+    position: relative;
+    z-index: 10;
+    margin: 48px 5vw 0;
+    padding: 40px 44px;
+    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(0,200,83,0.03);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: center;
+  }
+  .ps5-footer-strip::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, transparent, #00C853, transparent);
+    box-shadow: 0 0 12px rgba(0,200,83,0.4);
+  }
+  .ps5-footer-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(18px, 2.5vw, 30px);
+    font-weight: 900;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .ps5-footer-title span { color: #00C853; }
+  .ps5-footer-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(14px, 1.2vw, 16px);
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+    max-width: 680px;
+  }
+  .ps5-footer-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    background: transparent;
+    border: 1px solid #00C853;
+    color: #00C853;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.25s;
+    white-space: nowrap;
+    box-shadow: 0 0 15px rgba(0,200,83,0.1);
+  }
+  .ps5-footer-cta:hover {
+    background: rgba(0,200,83,0.1);
+    box-shadow: 0 0 25px rgba(0,200,83,0.25);
+    transform: translateY(-2px);
+  }
+
+  /* ── Responsive ───────────────────────────── */
+  @media (max-width: 768px) {
+    .ps5-section { padding: 70px 0 60px; }
+    .ps5-header { padding: 0 6vw 44px; }
+    .ps5-header-stats { display: none; }
+    .ps5-carousel-wrap { padding: 0 6vw; }
+    .ps5-detail-inner { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
+    .ps5-detail-action { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
+    .ps5-detail-panel { margin: 36px 6vw 0; }
+    .ps5-footer-strip { grid-template-columns: 1fr; gap: 24px; padding: 28px; margin: 36px 6vw 0; }
+    .ps5-card { width: 160px; height: 220px; }
+  }
+  @media (max-width: 480px) {
+    .ps5-card { width: 140px; height: 200px; }
+    .ps5-detail-stats { gap: 16px; }
+    .ps5-controls-hint { display: none; }
+  }
