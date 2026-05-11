@@ -212,7 +212,7 @@ export default function LoginPortal() {
         className="card-wrapper"
       >
         <div className="form-content">
-          <button type="button" className="close-btn" onClick={() => router.push('/v2')}>
+          <button type="button" className="close-btn" onClick={() => router.push('/')}>
             <X size={20} />
           </button>
 

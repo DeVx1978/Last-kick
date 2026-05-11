@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import "./Carousel.css";
+import { useRouter } from "next/navigation";
 
 const slides = [
   {
@@ -15,6 +16,7 @@ const slides = [
     desc: "Regístrate ahora y entra a competir por el premio acumulado. Predice los resultados del fútbol, avanza ronda tras ronda hasta llegar a la final y gana jugando con tus conocimientos. Aquí no apuestas: aquí triunfas acertando..",
     tags: ["PREDICE EL MUNDIAL", "GANA HASTA $200K", "DOLARES"],
     cta: "Estas listo para jugar y predecir?",
+    href: "/register",
   },
   {
     badge: "WORLD CUP 2026",
@@ -27,6 +29,7 @@ const slides = [
     desc: "Apuesta por cada partido del Mundial 2026. Cuotas en vivo, mercados especiales y torneos de predicción con premios millonarios en COP.",
     tags: ["COLOMBIA", "EN VIVO", "PREMIOS MILLONARIOS"],
     cta: "Apostar Ahora",
+    href: "/register",
   },
   {
     badge: "TORNEOS",
@@ -39,6 +42,7 @@ const slides = [
     desc: "Ingresa a torneos gratuitos y de entrada. Sé el mejor predictor de la semana y llévate premios en efectivo directos a tu cuenta.",
     tags: ["GRATIS", "SEMANALES", "TOP 3 GANA"],
     cta: "Entrar al Torneo",
+    href: "/register",
   },
   {
     badge: "PREMIOS",
@@ -51,6 +55,7 @@ const slides = [
     desc: "Cada predicción correcta suma puntos a tu perfil. Alcanza el nivel Diamante y desbloquea bonos exclusivos, freebets y sorpresas.",
     tags: ["FREEBETS", "NIVEL DIAMANTE", "CASHBACK"],
     cta: "Ver Recompensas",
+    href: "/register",
   },
   {
     badge: "LIVE BETTING",
@@ -63,6 +68,7 @@ const slides = [
     desc: "Activa el modo en vivo y realiza predicciones mientras el partido se desarrolla. La mayor emoción está en los últimos minutos.",
     tags: ["TIEMPO REAL", "CASH OUT", "MULTI-LIVE"],
     cta: "Apostar en Vivo",
+    href: "/register",
   },
   {
     badge: "RANKING",
@@ -75,6 +81,7 @@ const slides = [
     desc: "Compite en el leaderboard nacional. Los 10 mejores predictores de la semana reciben bonos automáticos. ¿Tienes lo que se necesita?",
     tags: ["SEMANAL", "TOP 10", "BONOS AUTOMÁTICOS"],
     cta: "Ver Ranking",
+    href: "/register",
   },
   {
     badge: "LAST KICK",
@@ -87,6 +94,7 @@ const slides = [
     desc: "Selecciona tu apuesta más confiada de la jornada con multiplicador x5. Una sola predicción puede transformar toda tu semana.",
     tags: ["MULTIPLICADOR x5", "UNA JORNADA", "TODO O NADA"],
     cta: "Jugada Final",
+    href: "/register",
   },
 ];
 
@@ -94,6 +102,7 @@ const DURATION = 5000;
 const TICK = 50;
 
 export default function Carousel() {
+  const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [progress, setProgress] = useState(0);
   const [activeClass, setActiveClass] = useState(true);
@@ -141,13 +150,13 @@ export default function Carousel() {
     }, TICK);
   }, []);
 
- useEffect(() => {
-  startProgress();
-  return () => {
-    if (progressInterval.current) clearInterval(progressInterval.current);
-  };
-// eslint-disable-next-line react-hooks/exhaustive-deps
-}, [current]); // eslint-disable-line
+  useEffect(() => {
+    startProgress();
+    return () => {
+      if (progressInterval.current) clearInterval(progressInterval.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current]);
 
   const handleNav = (dir: number) => {
     if (progressInterval.current) clearInterval(progressInterval.current);
@@ -222,7 +231,6 @@ export default function Carousel() {
 
   return (
     <>
-
       <section className="bp-universe">
         {/* Scanlines */}
         <div className="bp-scanlines" />
@@ -269,7 +277,13 @@ export default function Carousel() {
                     {s.title[1]}
                   </h2>
                   <p className="bp-sub">{s.sub}</p>
-                  <button className="bp-cta">{s.cta} ▶</button>
+                  {/* ✅ BOTÓN CTA SUPERIOR — navega a /register */}
+                  <button
+                    className="bp-cta"
+                    onClick={() => router.push(s.href)}
+                  >
+                    {s.cta} ▶
+                  </button>
                 </div>
 
                 <div className={`bp-visual${activeClass && i === current ? " bp-visual--in" : ""}`}>
@@ -340,7 +354,13 @@ export default function Carousel() {
                 </div>
                 <div className="bp-info-right">
                   <div className="bp-info-num">{pad(i + 1)}</div>
-                  <button className="bp-info-cta">{s.cta} ▶</button>
+                  {/* ✅ BOTÓN CTA INFERIOR — navega a /register */}
+                  <button
+                    className="bp-info-cta"
+                    onClick={() => router.push(s.href)}
+                  >
+                    {s.cta} ▶
+                  </button>
                 </div>
               </div>
             ))}
