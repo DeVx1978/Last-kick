@@ -1,14 +1,14 @@
 "use client";
 
 import Navbar from "../Navbar/Navbar";
-import LiveMatchTicker from "../LiveMatchTicker";
+import LiveMatchTicker from "../LiveMatchTicker/LiveMatchTicker";
 import Hero from "../Hero/Hero";
 import PromoSection from "./PromoSection";
-import HeroSlider from "../HeroSlider";
+import HeroSlider from "../HeroSlider/HeroSlider";
 import WinnerStrip from "./WinnerStrip";
 import About from "../About/About";
 import TournamentsPreview from "./TournamentsPreview";
-import Footer from "../Footer";
+import Footer from "../Footer/Footer";
 import GameModal from "./GameModal";
 import AlertFeed from "./AlertFeed";
 import BackgroundFX from "./BackgroundFX";
