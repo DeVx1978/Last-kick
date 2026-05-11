@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 // ✅ CORRECCIÓN: Importamos el cliente centralizado — nunca más keys hardcodeadas
 import { supabase } from '@/lib/supabase';
 
-const IMAGEN_FONDO = '/img/noche.jpg';
+const IMAGEN_FONDO = '/img/allianz1.jpg';
 
 // ✅ Componente del ojo que sigue al mouse — diseño intacto
 const TrackingEye = ({ show, onClick, mousePos }: {
@@ -212,13 +212,13 @@ export default function LoginPortal() {
         className="card-wrapper"
       >
         <div className="form-content">
-          <button type="button" className="close-btn" onClick={() => router.push('/')}>
+          <button type="button" className="close-btn" onClick={() => router.push('/v2')}>
             <X size={20} />
           </button>
 
           <div className="auth-header">
-            <h1 className="auth-logo">ACCESO</h1>
-            <p className="auth-subtitle">IDENTIFICACION DE VETERANO</p>
+            <h1 className="auth-logo">LAST KICK</h1>
+            <p className="auth-subtitle">INGRESA TUS DATOS</p>
           </div>
 
           <form onSubmit={handleLogin} autoComplete="off">
@@ -275,7 +275,7 @@ export default function LoginPortal() {
               onClick={() => router.push('/register')}
               className="register-link-btn"
             >
-              ¿NUEVO RECLUTA? SOLICITAR CONTRATO
+              ¿NO TIENES CUENTA? REGISTRARSE
             </button>
           </form>
         </div>

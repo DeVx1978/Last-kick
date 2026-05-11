@@ -617,5 +617,7 @@ a,a:visited,a:hover,a:active{
 
   .manual-title h2{
     font-size:32px;
+    *:focus { outline: none; }
+*:focus-visible { outline: none; }
   }
 }

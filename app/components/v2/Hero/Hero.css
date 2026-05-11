@@ -124,6 +124,8 @@
   display:grid;grid-template-columns:1fr auto;gap:40px;
   padding:56px 40px 48px;
   min-height:520px;align-items:center;
+  background-image: url('/img/estadio10.jpg');background-size:cover;background-position:center;background-repeat:no-repeat;
+  background-color:rgba(0,0,0,0.55);background-blend-mode:darken;
 }
 @media(max-width:900px){
   .lk-main{grid-template-columns:1fr;padding:36px 24px;}

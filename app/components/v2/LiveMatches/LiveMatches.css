@@ -2,12 +2,25 @@
 
   /* ── Contenedor general ─────────────────────── */
   .ps5-section {
-    position: relative;
-    z-index: 20;
-    padding: 100px 0 80px;
-    overflow: hidden;
-    background: transparent;
-  }
+  position: relative;
+  z-index: 20;
+  padding: 100px 0 80px;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* ── Imagen de fondo de la sección ── */
+.ps5-bg-image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url('/img/estadio2.jpg'); /* 👈 CAMBIA ESTA RUTA */
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  opacity: 0.18; /* 👈 AJUSTA LA OPACIDAD (0.0 = invisible, 1.0 = completa) */
+  filter: saturate(0.6) brightness(0.8);
+}
 
   /* ── Fondo animado con partículas ─────────────── */
   .ps5-bg-canvas {

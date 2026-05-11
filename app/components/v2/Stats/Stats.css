@@ -220,3 +220,15 @@
   transition:background 0.2s,box-shadow 0.2s;
 }
 .lk-meta-cta:hover{background:#FF1A45;box-shadow:0 0 20px rgba(232,0,45,0.6);}
+.lk-container, .lk-step, .lk-step-head, .lk-step-body {
+  user-select: none;
+  caret-color: transparent;
+}
+.lk-how {
+  background-image: url('/img/europa1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(0,0,0,0.75);
+  background-blend-mode: darken;
+}

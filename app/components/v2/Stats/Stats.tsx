@@ -3,6 +3,7 @@
 
 import { useState } from "react";
 import "./Stats.css";
+import Link from "next/link";
 
 
 // ─── DATA ──────────────────────────────────────────────────────────────────────
@@ -116,10 +117,10 @@ export default function HowToPlay() {
           {/* HEADER */}
           <div className="lk-how-header">
             <div>
-              <div className="lk-eyebrow">Mecánicas del juego</div>
+              <div className="lk-eyebrow">Instrucciones del juego</div>
               <h2 className="lk-how-title">
-                Cómo se<br />
-                <span className="accent">juega</span>
+                LAST<br />
+                <span className="accent">KICK</span>
               </h2>
             </div>
             <div className="lk-how-header-right">
@@ -194,7 +195,7 @@ export default function HowToPlay() {
               <div className="lk-meta-dot" />
               <span className="lk-meta-text">MUNDIAL 2026 • CADA VIDA CUENTA</span>
             </div>
-            <button className="lk-meta-cta">+ CREAR CUENTA</button>
+            <Link href="/register" className="lk-meta-cta">+ CREAR CUENTA</Link>
           </div>
 
         </div>

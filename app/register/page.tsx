@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 // ✅ CORRECCIÓN: Cliente centralizado — sin keys hardcodeadas
 import { supabase } from '@/lib/supabase';
 
-const IMAGEN_FONDO = '/img/noche.jpg';
+const IMAGEN_FONDO = '/img/bayern1.jpg';
 
 // ✅ Lista de países con códigos — encoding corregido
 const COUNTRIES = [
@@ -281,13 +281,13 @@ export default function RegisterPortal() {
         className="card-wrapper"
       >
         <div className="form-content">
-          <button type="button" className="close-btn" onClick={() => router.push('/')}>
+          <button type="button" className="close-btn" onClick={() => router.push('/v2')}>
             <X size={20} />
           </button>
 
           <div className="auth-header">
-            <h1 className="auth-logo">EL CALAMAR</h1>
-            <p className="auth-subtitle">RECLUTAMIENTO TACTICO</p>
+            <h1 className="auth-logo">LAST KICK</h1>
+            <p className="auth-subtitle">REGISTRO DE USUARIO</p>
           </div>
 
           <form onSubmit={handleRegister} autoComplete="off">
@@ -414,7 +414,7 @@ export default function RegisterPortal() {
             <button type="submit" className="submit-btn" disabled={isLoading}>
               {isLoading
                 ? <Activity className="animate-spin mx-auto" size={20} />
-                : 'FIRMAR CONTRATO'
+                : 'REGISTRARSE'
               }
             </button>
 

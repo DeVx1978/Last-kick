@@ -6,22 +6,22 @@ import "./Carousel.css";
 const slides = [
   {
     badge: "BIENVENIDA",
-    title: ["Recibe tu", "Bono Inicial"],
+    title: ["Registrate", "y Participa"],
     sub: "Comienza hoy y entra al ranking global.",
     icon: "🎁",
-    image: "https://images.unsplash.com/photo-1575361204480-aadea25e6e68?w=1600&q=80",
-    category: "OFERTA DE BIENVENIDA",
-    headline: "100% en tu primer depósito",
-    desc: "Registrate ahora y duplica tu saldo inicial. Hasta $200.000 COP de bono garantizado para comenzar a ganar desde el primer minuto.",
-    tags: ["PRIMER DEPÓSITO", "HASTA $200K", "SIN LÍMITES"],
-    cta: "Reclamar Bono",
+    image: "/img/mexico1.jpg",
+    category: "JUEGA, PREDICE, Y GANA DESDE EL PRIMER PARTIDO",
+    headline: "Pon a Prueba tu intuicion y Conocimiento",
+    desc: "Regístrate ahora y entra a competir por el premio acumulado. Predice los resultados del fútbol, avanza ronda tras ronda hasta llegar a la final y gana jugando con tus conocimientos. Aquí no apuestas: aquí triunfas acertando..",
+    tags: ["PREDICE EL MUNDIAL", "GANA HASTA $200K", "DOLARES"],
+    cta: "Estas listo para jugar y predecir?",
   },
   {
     badge: "WORLD CUP 2026",
     title: ["Predice el", "Mundial 2026"],
     sub: "Cada partido puede darte puntos reales.",
     icon: "🌍",
-    image: "https://images.unsplash.com/photo-1547347298-4074fc3086f0?w=1600&q=80",
+    image: "/img/banner1.jpg",
     category: "EVENTO MUNDIAL",
     headline: "La Selección Colombia te espera",
     desc: "Apuesta por cada partido del Mundial 2026. Cuotas en vivo, mercados especiales y torneos de predicción con premios millonarios en COP.",
@@ -33,7 +33,7 @@ const slides = [
     title: ["Compite", "Contra Miles"],
     sub: "Enfrenta jugadores de todo el mundo.",
     icon: "⚔️",
-    image: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1600&q=80",
+    image: "/img/banner2.jpg",
     category: "TORNEOS SEMANALES",
     headline: "Escala el ranking nacional",
     desc: "Ingresa a torneos gratuitos y de entrada. Sé el mejor predictor de la semana y llévate premios en efectivo directos a tu cuenta.",
@@ -45,7 +45,7 @@ const slides = [
     title: ["Sube", "de Nivel"],
     sub: "Gana recompensas por cada acierto.",
     icon: "🏆",
-    image: "https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?w=1600&q=80",
+    image: "/img/banner3.jpg",
     category: "SISTEMA DE RECOMPENSAS",
     headline: "Puntos que se convierten en COP",
     desc: "Cada predicción correcta suma puntos a tu perfil. Alcanza el nivel Diamante y desbloquea bonos exclusivos, freebets y sorpresas.",
@@ -57,7 +57,7 @@ const slides = [
     title: ["Predicciones", "en Vivo"],
     sub: "Juega mientras rueda el balón.",
     icon: "⚡",
-    image: "https://images.unsplash.com/photo-1508098682722-e99c643e7485?w=1600&q=80",
+    image: "/img/banner4.jpg",
     category: "APUESTAS EN TIEMPO REAL",
     headline: "Cuotas que cambian cada segundo",
     desc: "Activa el modo en vivo y realiza predicciones mientras el partido se desarrolla. La mayor emoción está en los últimos minutos.",
@@ -90,7 +90,7 @@ const slides = [
   },
 ];
 
-const DURATION = 4000;
+const DURATION = 5000;
 const TICK = 50;
 
 export default function Carousel() {
@@ -141,12 +141,13 @@ export default function Carousel() {
     }, TICK);
   }, []);
 
-  useEffect(() => {
-    startProgress();
-    return () => {
-      if (progressInterval.current) clearInterval(progressInterval.current);
-    };
-  }, [startProgress]);
+ useEffect(() => {
+  startProgress();
+  return () => {
+    if (progressInterval.current) clearInterval(progressInterval.current);
+  };
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [current]); // eslint-disable-line
 
   const handleNav = (dir: number) => {
     if (progressInterval.current) clearInterval(progressInterval.current);

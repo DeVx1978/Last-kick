@@ -200,6 +200,7 @@ t.accentColor +
     <section className="ps5-section" ref={sectionRef}>
 
       {/* ── Fondos animados ── */}
+      <div className="ps5-bg-image" /> 
       <div className="ps5-bg-canvas" />
       <div className="ps5-grid-bg" />
       <div className="ps5-orb ps5-orb-1" />
