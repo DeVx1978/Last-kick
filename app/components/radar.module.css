@@ -1,0 +1,597 @@
+/* ═══════════════════════════════════════════════════════════
+   ESTÉTICA MINIMALISTA - PREMIUM SAAS (MATCH EXACTO DE IMAGEN)
+═══════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@800&display=swap');
+
+.layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0B1121; /* Azul ultra oscuro de fondo */
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: 260px;
+  background-color: #0F172A;
+  border-right: 1px solid #1E293B;
+  display: flex;
+  flex-direction: column;
+  padding: 40px 0;
+  z-index: 10;
+}
+
+.brand {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 38px;
+  font-weight: 800;
+  text-align: center;
+  color: #00E887;
+  text-shadow: 0 0 20px rgba(0, 232, 135, 0.4);
+  margin-bottom: 50px;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: transparent;
+  border: none;
+  color: #64748B;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.navBtn:hover { color: #F8FAFC; }
+
+.navBtnOn {
+  color: #00E887;
+  background: linear-gradient(90deg, rgba(0, 232, 135, 0.1) 0%, transparent 100%);
+  border-left: 3px solid #00E887;
+}
+
+/* ── ÁREA CENTRAL ── */
+.main {
+  flex: 1;
+  padding: 40px 50px;
+  overflow-y: auto;
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #94A3B8;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* ── CARNET TÁCTICO DEL JUGADOR (HEADER RECONSTRUIDO) ── */
+.headerCard {
+  background-color: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Lado Izquierdo: Avatar e Info */
+.profileLeft { 
+  display: flex; 
+  align-items: center; 
+  gap: 24px; 
+}
+
+.avatarBox {
+  width: 68px; 
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(0, 184, 255, 0.1);
+  border: 2px solid #00B8FF;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  font-size: 32px; 
+  font-weight: 800; 
+  color: #00B8FF;
+  font-family: 'Orbitron', sans-serif;
+  box-shadow: 0 0 15px rgba(0, 184, 255, 0.2);
+}
+
+.profileInfo { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+}
+
+.profileBrand { 
+  font-size: 10px; 
+  color: #00B8FF; 
+  letter-spacing: 2px; 
+  text-transform: uppercase; 
+  font-weight: 700; 
+}
+
+.profileName { 
+  font-size: 24px; 
+  font-weight: 800; 
+  color: #F8FAFC; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+  line-height: 1;
+}
+
+.profileMeta { 
+  font-size: 12px; 
+  color: #94A3B8; 
+  font-family: monospace; 
+  letter-spacing: 1px; 
+}
+
+/* Etiquetas (Tags) */
+.profileTags { 
+  display: flex; 
+  gap: 8px; 
+  margin-top: 4px; 
+}
+
+.tag { 
+  padding: 4px 10px; 
+  font-size: 10px; 
+  border-radius: 6px; 
+  font-weight: 700; 
+  letter-spacing: 1px; 
+  text-transform: uppercase; 
+}
+
+.tagGreen { background: rgba(0, 232, 135, 0.1); color: #00E887; border: 1px solid rgba(0, 232, 135, 0.2); }
+.tagBlue { background: rgba(0, 184, 255, 0.1); color: #00B8FF; border: 1px solid rgba(0, 184, 255, 0.2); }
+.tagRed { background: rgba(255, 59, 92, 0.1); color: #FF3B5C; border: 1px solid rgba(255, 59, 92, 0.2); }
+
+/* Lado Derecho: Estadísticas Vitales */
+.profileStats { 
+  display: flex; 
+  gap: 40px; 
+  align-items: center; 
+}
+
+.statItem { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 4px; 
+}
+
+.statLbl { 
+  font-size: 11px; 
+  color: #94A3B8; 
+  letter-spacing: 2px; 
+  text-transform: uppercase; 
+}
+
+.statVal { 
+  font-size: 28px; 
+  font-weight: 800; 
+  font-family: 'Orbitron', sans-serif; 
+}
+
+.valGreen { color: #00E887; }
+.valBlue { color: #00B8FF; }
+.valYellow { color: #FFD700; }
+
+/* ── GRID DE EVENTOS (3 COLUMNAS) ── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.eventCard {
+  background-color: #0F172A;
+  border: 1px solid #1E293B;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+}
+
+.eventCard:hover {
+  border-color: #38BDF8;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.eventHdr { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.eventIcon { width: 40px; height: 40px; border-radius: 50%; background: #1E293B; display: flex; align-items: center; justify-content: center; color: #94A3B8; }
+.eventTitles { display: flex; flex-direction: column; }
+.eventName { font-size: 15px; font-weight: 600; color: #F8FAFC; line-height: 1.2; }
+.eventSub { font-size: 12px; color: #64748B; margin-top: 2px; }
+
+.actionBtn {
+  margin-top: auto;
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid #00B8FF;
+  color: #00B8FF;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background: rgba(0, 184, 255, 0.1);
+}
+/* ═══════════════════════════════════════════════════════════
+   VISTA: PERFIL DETALLADO DEL JUGADOR
+═══════════════════════════════════════════════════════════ */
+.profileLayout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ── TARJETA DE IDENTIDAD (IZQUIERDA) ── */
+.idCard {
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-radius: 16px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.idCard::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 4px; height: 100%;
+  background: #00E887;
+}
+
+.idAvatarContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.idAvatarBox {
+  width: 100px; height: 100px;
+  border-radius: 12px;
+  background: #1E293B;
+  border: 2px solid #38BDF8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  color: #38BDF8;
+  font-family: 'Orbitron', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.idAvatarImg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.avatarUploadBtn {
+  position: absolute;
+  bottom: -10px; right: 50px;
+  background: #38BDF8;
+  color: #0F172A;
+  border: none;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(56, 189, 248, 0.4);
+}
+
+.idCode {
+  margin-top: 16px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #F8FAFC;
+  letter-spacing: 2px;
+}
+
+.idFieldList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.idField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.idFieldLbl {
+  font-size: 10px;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.idFieldVal {
+  font-size: 14px;
+  color: #F8FAFC;
+  font-weight: 600;
+}
+
+.barcode {
+  height: 40px;
+  width: 100%;
+  background: repeating-linear-gradient(
+    to right,
+    #64748B,
+    #64748B 2px,
+    transparent 2px,
+    transparent 4px,
+    #64748B 4px,
+    #64748B 5px,
+    transparent 5px,
+    transparent 8px
+  );
+  opacity: 0.5;
+  margin-top: auto;
+}
+
+/* ── PANEL DE DATOS Y STATS (DERECHA) ── */
+.profileRight {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.bigStatCard {
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bigStatLbl {
+  font-size: 12px;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.bigStatVal {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.formCard {
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.formCardTitle {
+  font-size: 14px;
+  color: #38BDF8;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.editBtn {
+  width: 100%;
+  padding: 16px;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid #38BDF8;
+  color: #38BDF8;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.editBtn:hover { background: #38BDF8; color: #0F172A; }
+
+/* RESPONSIVE PERFECTO */
+@media (max-width: 900px) {
+  .profileLayout { grid-template-columns: 1fr; }
+  .idCard { width: 100%; }
+}
+/* ═══════════════════════════════════════════════════════════
+   NAVEGACIÓN MÓVIL (BOTTOM APP BAR - IMAGEN 2)
+═══════════════════════════════════════════════════════════ */
+.bottomNav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #060B14;
+  border-top: 1px solid #1E293B;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bottomNavWrap {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 70px;
+}
+
+.bottomBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #64748B;
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.bottomBtnOn {
+  color: #00E887;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   REGLAS RESPONSIVE ESTRICTAS (MATA EL SIDEBAR EN MÓVIL)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  /* 1. Oculta el Sidebar gigante de PC */
+  .sidebar { 
+    display: none !important; 
+  }
+  
+  /* 2. Muestra la Barra Inferior */
+  .bottomNav { 
+    display: block; 
+  }
+  
+  /* 3. Expande el área central y da espacio al Bottom Bar */
+  .main { 
+    padding: 20px 15px 90px 15px; 
+    width: 100%;
+  }
+  
+  /* 4. Arregla el Carnet para que no se aplaste */
+  .headerCard { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 24px; 
+    padding: 20px;
+  }
+  
+  .profileStats { 
+    width: 100%; 
+    justify-content: space-between; 
+    gap: 10px;
+  }
+
+  /* 5. Asegura que el Perfil se ponga en 1 sola columna */
+  .profileLayout { 
+    grid-template-columns: 1fr; 
+  }
+}
+/* ═══════════════════════════════════════════════════════════
+   MÓDULOS DE RECARGA Y CANJE
+═══════════════════════════════════════════════════════════ */
+.actionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.actionPanel {
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.panelHdr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #F8FAFC;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.panelDesc {
+  color: #94A3B8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.inputPremium {
+  background: #1E293B;
+  border: 1px solid #334155;
+  padding: 16px 20px;
+  border-radius: 8px;
+  color: #00E887;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  width: 100%;
+  outline: none;
+  transition: border 0.2s;
+  letter-spacing: 2px;
+}
+
+.inputPremium:focus {
+  border-color: #00E887;
+}
+
+.btnPrimary {
+  background: #00E887;
+  color: #0B1121;
+  border: none;
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: auto;
+  transition: all 0.2s;
+}
+
+.btnPrimary:hover { background: #00c774; transform: translateY(-2px); }
+
+.btnSecondary {
+  background: transparent;
+  color: #38BDF8;
+  border: 1px solid #38BDF8;
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: auto;
+  transition: all 0.2s;
+}
+
+.btnSecondary:hover { background: rgba(56, 189, 248, 0.1); }

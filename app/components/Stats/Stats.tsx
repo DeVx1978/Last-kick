@@ -1,205 +1,152 @@
 "use client";
 
-
-import { useState } from "react";
-import "./Stats.css";
 import Link from "next/link";
+import "./Stats.css";
 
-
-// ─── DATA ──────────────────────────────────────────────────────────────────────
-
+/* ── Data ── */
 const STEPS = [
   {
     num: "01",
-    badge: "REGISTRO",
-    icon: "💳",
-    title: "Regístrate por $5 USD",
-    tags: ["SIN COSTOS OCULTOS", "PAGO ÚNICO", "ACTIVACIÓN INMEDIATA"],
-    stats: [
-      { val: "$5",   lbl: "Entrada" },
-      { val: "8",    lbl: "Vidas" },
-      { val: "0",    lbl: "Subscripciones" },
-    ],
+    icon: "👤",
+    title: "Regístrate",
     desc: (
       <>
-        Crea tu cuenta y realiza un pago único de <strong>$5 USD</strong>. Al instante recibes{" "}
-        <strong>8 vidas</strong> con las que debes sobrevivir los{" "}
-        <span className="hl-cyan">104 partidos del Mundial</span>. Sin subscripciones, sin costos
-        ocultos, sin sorpresas.
+        Crea tu cuenta <strong>gratis</strong> en segundos. Usa un correo
+        verificable para mantener tu acceso seguro y no perder tus premios.
       </>
     ),
-    cta: "Registrarme Ahora",
+    tag: "Sin costo",
+    href: "/register",
   },
   {
     num: "02",
-    badge: "PREDICCIÓN",
-    icon: "⚽",
-    title: "Predice cada partido",
-    tags: ["ANTES DEL PITAZO", "3 OPCIONES", "PLAZO LÍMITE"],
-    stats: [
-      { val: "3",   lbl: "Opciones" },
-      { val: "104", lbl: "Partidos" },
-      { val: "-1",  lbl: "Sin predecir" },
-    ],
+    icon: "⚡",
+    title: "Recarga vidas",
     desc: (
       <>
-        Antes del pitazo inicial debes elegir:{" "}
-        <strong>victoria local, empate o victoria visitante</strong>. Tienes plazo máximo hasta el
-        inicio de cada partido.{" "}
-        <span className="hl-red">Si no predices a tiempo: −1 vida automática.</span> La disciplina
-        es parte del juego.
+        Compra vidas con nuestros pines. Cada vida te permite hacer una
+        predicción. Distribúyelas entre los torneos que más te interesen.
       </>
     ),
-    cta: "Ver Calendario",
+    tag: "Comprar vidas",
+    href: "/recargar",
   },
   {
     num: "03",
-    badge: "SUPERVIVENCIA",
-    icon: "❤️",
-    title: "Cuida tus vidas",
-    tags: ["RACHA DE 5 = +1 VIDA", "RECARGA DISPONIBLE", "EN COMA = ALERTA"],
-    stats: [
-      { val: "-1", lbl: "Por error" },
-      { val: "+1", lbl: "Racha x5" },
-      { val: "∞",  lbl: "Recargas" },
-    ],
+    icon: "🎯",
+    title: "Predice",
     desc: (
       <>
-        Cada predicción incorrecta cuesta <span className="hl-red">1 vida</span>. Acierta{" "}
-        <span className="hl-green">5 partidos consecutivos</span> y ganas{" "}
-        <span className="hl-green">+1 vida extra</span>. Si llegas a 0 vidas entras en{" "}
-        <strong>modo Coma</strong> — puedes{" "}
-        <span className="hl-cyan">recargar y seguir</span>. Cada recarga suma al pozo total.
+        Elige el resultado que crees que va a ocurrir en cada partido.
+        Analiza, sigue tu intuición y demuestra que sabes más que los demás.
       </>
     ),
-    cta: "Ver Sistema de Vidas",
+    tag: "Jugar ahora",
+    href: "/partidos",
   },
   {
     num: "04",
-    badge: "LA FINAL",
     icon: "🏆",
-    title: "Predice La Final y llévate todo",
-    tags: ["SOLO SOBREVIVIENTES", "TODO EL POZO", "UN GANADOR"],
-    stats: [
-      { val: "$500K+", lbl: "Premio" },
-      { val: "1",      lbl: "Ganador" },
-      { val: "0",      lbl: "Splits" },
-    ],
+    title: "Gana",
     desc: (
       <>
-        Solo quienes lleguen <strong>vivos</strong> al último partido pueden predecir la Gran Final
-        del Mundial. El ganador de esa predicción se lleva{" "}
-        <span className="hl-gold">todo el pozo acumulado</span>. Sin divisiones. Sin splits.{" "}
-        <span className="hl-red">Todo para uno.</span>
+        Acierta las predicciones y reclama tu premio. Cada torneo tiene un
+        premio <strong>independiente</strong>. Cuantos más aciertes, más ganas.
       </>
     ),
-    cta: "Ver Premio Acumulado",
+    tag: "Quiero ganar",
+    href: "/register",
   },
 ];
 
-// ─── COMPONENT ────────────────────────────────────────────────────────────────
+const FAQS = [
+  {
+    color: "g",
+    icon: "♻",
+    q: "¿Qué pasa si pierdo una vida?",
+    a: "Cada predicción incorrecta consume una vida. Sin vidas debes recargar para seguir compitiendo en los torneos activos.",
+  },
+  {
+    color: "y",
+    icon: "⏱",
+    q: "¿Cuándo cierran las predicciones?",
+    a: "Al inicio de cada partido. Una vez arranca el juego ya no puedes modificar ni añadir predicciones para ese evento.",
+  },
+  {
+    color: "b",
+    icon: "💰",
+    q: "¿Cómo se reparten los premios?",
+    a: "Cada torneo tiene un premio acumulado propio. Ganan quienes aciertan todas las predicciones del evento completo.",
+  },
+  {
+    color: "r",
+    icon: "📋",
+    q: "¿Puedo jugar varios torneos?",
+    a: "Sí. Distribuye tus vidas entre todos los torneos activos. Cada evento funciona de forma completamente independiente.",
+  },
+];
 
+/* ── Component ── */
 export default function HowToPlay() {
-  const [open, setOpen] = useState<number | null>(0);
-
-  const toggle = (i: number) => setOpen((prev) => (prev === i ? null : i));
-
-  const progress =
-    open !== null ? Math.round(((open + 1) / STEPS.length) * 100) : 0;
-
   return (
-    <>
+    <section className="lk-how" id="como-jugar">
+      <div className="lk-how-inner">
 
-      <section className="lk-how" id="como-jugar">
-        <div className="lk-grid-bg" />
-        <div className="lk-wrap">
+        {/* HEADER */}
+        <div className="lk-how-head">
+          <div>
+            <p className="lk-how-eyebrow">Instrucciones del juego</p>
+            <h2 className="lk-how-title">¿Cómo jugar?</h2>
+          </div>
+          <p className="lk-how-desc">
+            Kick Last es un juego de predicciones futbolísticas donde la
+            intuición vale más que la suerte. Solo 4 pasos para empezar a ganar.
+          </p>
+        </div>
 
-          {/* HEADER */}
-          <div className="lk-how-header">
-            <div>
-              <div className="lk-eyebrow">Instrucciones del juego</div>
-              <h2 className="lk-how-title">
-                LAST<br />
-                <span className="accent">KICK</span>
-              </h2>
+        {/* STEPS */}
+        <div className="lk-steps-grid">
+          {STEPS.map((s, i) => (
+            <div key={i} className="lk-step">
+              <div className="lk-step-bg-num">{s.num}</div>
+              <div className="lk-step-top">
+                <div className="lk-step-num">{s.num}</div>
+                <span className="lk-step-icon">{s.icon}</span>
+              </div>
+              <div className="lk-step-title">{s.title}</div>
+              <p className="lk-step-desc">{s.desc}</p>
+              <Link href={s.href} className="lk-step-tag">
+                {s.tag} <span className="lk-step-tag-arr">›</span>
+              </Link>
             </div>
-            <div className="lk-how-header-right">
-              <p className="lk-how-desc">
-                Cuatro pasos que separan al jugador promedio del único que llega a la Final.
-                Selecciona cada fase para descubrir cómo funciona el sistema.
-              </p>
-              <div className="lk-prog-bar">
-                <div className="lk-prog-fill" style={{ width: `${progress}%` }} />
+          ))}
+        </div>
+
+        {/* FAQ */}
+        <div className="lk-faq-grid">
+          {FAQS.map((f, i) => (
+            <div key={i} className="lk-faq-card">
+              <div className={`lk-faq-ico ${f.color}`}>{f.icon}</div>
+              <div>
+                <div className="lk-faq-q">{f.q}</div>
+                <p className="lk-faq-a">{f.a}</p>
               </div>
             </div>
-          </div>
-
-          {/* STEPS */}
-          <div className="lk-steps">
-            {STEPS.map((step, i) => {
-              const isOpen = open === i;
-              return (
-                <div
-                  key={i}
-                  className={`lk-step${isOpen ? " open" : ""}`}
-                  onClick={() => toggle(i)}
-                >
-                  {/* HEADER ROW */}
-                  <div className="lk-step-head">
-                    <div className="lk-step-num">{step.num}</div>
-                    <div className="lk-step-info">
-                      <span className="lk-step-icon">{step.icon}</span>
-                      <div>
-                        <div className="lk-step-badge">{step.badge}</div>
-                        <div className="lk-step-title">{step.title}</div>
-                      </div>
-                    </div>
-                    <div className="lk-step-arrow">▼</div>
-                  </div>
-
-                  {/* BODY */}
-                  <div className="lk-step-body">
-                    <div className="lk-step-content">
-                      <div className="lk-step-left-bar" />
-                      <div className="lk-step-body-inner">
-                        {/* STATS */}
-                        <div className="lk-step-stats">
-                          {step.stats.map((st, j) => (
-                            <div key={j} className="lk-sstat">
-                              <div className="lk-sstat-val">{st.val}</div>
-                              <div className="lk-sstat-lbl">{st.lbl}</div>
-                            </div>
-                          ))}
-                        </div>
-                        {/* TAGS */}
-                        <div className="lk-step-tags">
-                          {step.tags.map((t, j) => (
-                            <span key={j} className="lk-step-tag">{t}</span>
-                          ))}
-                        </div>
-                        {/* DESC */}
-                        <p className="lk-step-desc">{step.desc}</p>
-                        {/* CTA */}
-                        <button className="lk-step-cta">{step.cta} ▶</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* BOTTOM META */}
-          <div className="lk-meta">
-            <div className="lk-meta-left">
-              <div className="lk-meta-dot" />
-              <span className="lk-meta-text">MUNDIAL 2026 • CADA VIDA CUENTA</span>
-            </div>
-            <Link href="/register" className="lk-meta-cta">+ CREAR CUENTA</Link>
-          </div>
-
+          ))}
         </div>
-      </section>
-    </>
+
+        {/* FOOTER */}
+        <div className="lk-how-footer">
+          <div className="lk-how-footer-l">
+            <div className="lk-how-fdot" />
+            <span className="lk-how-ftxt">Mundial 2026 · Cada vida cuenta</span>
+          </div>
+          <Link href="/register" className="lk-how-cta">
+            + Crear cuenta gratis
+          </Link>
+        </div>
+
+      </div>
+    </section>
   );
 }
