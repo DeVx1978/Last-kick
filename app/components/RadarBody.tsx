@@ -91,7 +91,7 @@ const HERO_SLIDES = [
 const HERO_IMGS = [
   "/img/kick6.jpg",
   "/img/kick2.jpg",
-  "/img/kick7.jpg",
+  "/img/kick11.jpg",
 ];
 
 const Toast = ({ msg, type, onClose }: { msg:string; type:"ok"|"err"|"warn"; onClose:()=>void }) => (
@@ -887,16 +887,18 @@ export default function RadarBody() {
             {/* ═══ TAB RADAR ═══ */}
             {tab==="radar"&&(
               <>
-                {/* HERO — imagen de fondo con cross-fade, SIN botones de navegar */}
+                {/* HERO — Imagen limpia y brillante */}
                 <div className="hero">
                   {HERO_IMGS.map((src,i)=>(
                     <img key={i} className="hero-img"
                       src={src} alt=""
-                      style={{opacity:i===heroIdx?0.32:0,transition:"opacity 1.2s ease",position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}
+                      style={{opacity:i===heroIdx?1:0,transition:"opacity 1.2s ease",position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}
                       onError={e=>{(e.currentTarget as HTMLImageElement).style.display="none";}}
                     />
                   ))}
-                  <div className="hero-grad"/><div className="hero-gb"/>
+                  {/* AQUÍ ELIMINÉ/REDUJE EL GRADIENTE PARA QUE NO OSCUREZCA */}
+                  <div className="hero-grad" style={{background: "none"}}/><div className="hero-gb" style={{background: "none"}}/>
+                  
                   <div className="hero-content">
                     <div className="hero-slide" key={heroIdx}>
                       <div className="hero-badge">{heroSlide.badge}</div>
@@ -1045,18 +1047,10 @@ export default function RadarBody() {
                   {filter===null?null:loading?(
                     <div className="empty"><Activity size={28} className="spin-ico" style={{margin:"0 auto"}}/><div className="empty-t">Cargando eventos...</div></div>
                   ):eventosFiltrados.length===0?(
-                    <div style={{background:"#111827",border:"1px solid rgba(255,255,255,.06)",borderRadius:4,padding:"20px 16px",textAlign:"center" as const}}>
-                      <div style={{fontFamily:"'Oswald',sans-serif",fontSize:14,fontWeight:700,color:"rgba(255,255,255,.4)",marginBottom:6}}>MUNDIAL FIFA 2026</div>
-                      <div style={{fontSize:11,color:"rgba(255,255,255,.25)",marginBottom:12}}>48 selecciones · 104 partidos · 3 países sede</div>
-                      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:5,marginBottom:12}}>
-                        {[{v:"104",l:"Partidos",c:"#8dc63f"},{v:"48",l:"Equipos",c:"rgba(255,255,255,.5)"},{v:"32",l:"Días",c:"rgba(255,255,255,.5)"},{v:"1",l:"Campeón",c:"rgba(255,255,255,.5)"}].map(s=>(
-                          <div key={s.l} style={{background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.05)",borderRadius:3,padding:"9px 5px",textAlign:"center" as const}}>
-                            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:17,fontWeight:700,color:s.c}}>{s.v}</div>
-                            <div style={{fontSize:8,color:"rgba(255,255,255,.25)",letterSpacing:1,textTransform:"uppercase" as const,marginTop:2}}>{s.l}</div>
-                          </div>
-                        ))}
-                      </div>
-                      <div style={{fontSize:10,color:"rgba(255,255,255,.3)"}}>🎯 Usa los filtros de arriba para explorar los mercados disponibles</div>
+                    <div style={{background:"#111827",border:"1px solid rgba(255,255,255,.06)",borderRadius:4,padding:"28px 16px",textAlign:"center" as const}}>
+                      <div style={{fontSize:28,marginBottom:10}}>{filter==="INDIVIDUAL"?"⚡":filter==="TORNEO"?"🏆":filter==="COMBINADA"?"🎯":"⭐"}</div>
+                      <div style={{fontFamily:"'Oswald',sans-serif",fontSize:14,fontWeight:700,color:"rgba(255,255,255,.4)",marginBottom:6}}>{filter==="INDIVIDUAL"?"SIN PARTIDOS INDIVIDUALES":filter==="TORNEO"?"SIN TORNEOS ACTIVOS":filter==="COMBINADA"?"SIN COMBINADAS ACTIVAS":"SIN EVENTOS VIP"}</div>
+                      <div style={{fontSize:11,color:"rgba(255,255,255,.25)"}}>{filter==="INDIVIDUAL"?"No hay partidos individuales disponibles en este momento.":"No hay eventos de este tipo disponibles en este momento."}</div>
                     </div>
                   ):(
                     <>
@@ -1129,18 +1123,17 @@ export default function RadarBody() {
                         {/* ═══ TAB GANANCIAS ═══ */}
             {tab==="ganancias"&&(
               <>
-                {/* BANNER */}
-                <div style={{position:"relative",height:200,overflow:"hidden"}}>
-                  <img src="/img/kick1.jpg" alt=""
-                    style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
-                  <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(10,13,20,.95) 30%,rgba(10,13,20,.4) 100%)"}}/>
-                  <div style={{position:"absolute",bottom:0,left:0,right:0,height:60,background:"linear-gradient(transparent,#0a0d14)"}}/>
-                  <div style={{position:"relative",zIndex:2,padding:"0 24px",height:"100%",display:"flex",flexDirection:"column" as const,justifyContent:"center"}}>
-                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,fontWeight:700,color:"#8dc63f",letterSpacing:2,marginBottom:6,textTransform:"uppercase" as const}}>💰 Mis ganancias</div>
-                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:26,fontWeight:700,color:"#fff",lineHeight:1.05,textTransform:"uppercase" as const}}>TUS PREDICCIONES<br/>TIENEN VALOR</div>
-                    <div style={{fontSize:11,color:"rgba(255,255,255,.45)",marginTop:6}}>Saldo disponible: <b style={{color:"#8dc63f"}}>{perfil?.creditos?.toLocaleString()} PX</b></div>
-                  </div>
-                </div>
+                {/* BANNER LIMPIO */}
+                <div style={{position:"relative",height:260,overflow:"hidden",background:"#0d1119"}}>
+  <img src="/img/kick14.jpg" alt="Mis ganancias"
+    style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
+  <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(10,13,20,.92) 0%,rgba(10,13,20,.5) 100%)"}}/>
+  <div style={{position:"relative",zIndex:2,padding:"0 24px",height:"100%",display:"flex",flexDirection:"column",justifyContent:"flex-end",paddingBottom:28}}>
+    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,fontWeight:700,color:"#8dc63f",letterSpacing:2,marginBottom:8,textTransform:"uppercase" as const}}>💰 Mis ganancias</div>
+    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:28,fontWeight:700,color:"#fff",lineHeight:1.05,textTransform:"uppercase" as const}}>TUS PREDICCIONES<br/>TIENEN VALOR</div>
+    <div style={{fontSize:11,color:"rgba(255,255,255,.6)",marginTop:8}}>Saldo disponible: <b style={{color:"#8dc63f"}}>{perfil?.creditos?.toLocaleString()} PX</b></div>
+  </div>
+</div>
 
                 <div className="bd-pad">
                   {/* STATS */}
@@ -1322,14 +1315,12 @@ export default function RadarBody() {
             {tab==="perfil"&&perfil&&(
               <div className="bd-pad">
 
-                {/* ── BANNER PERFIL ── */}
-                <div style={{position:"relative",height:140,borderRadius:4,overflow:"hidden",marginBottom:18}}>
+               {/* ── BANNER PERFIL ── */}
+                <div style={{position:"relative",height:260,borderRadius:4,overflow:"hidden",marginBottom:18,background:"#0d1119"}}>
                   <img src="/img/kick2.jpg" alt=""
                     style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
-                  
-                  {/* AQUÍ ELIMINÉ LA CAPA OSCURA */}
-                  
-                  <div style={{position:"relative",zIndex:2,padding:"20px 22px",height:"100%",display:"flex",alignItems:"center",gap:20}}>
+                  <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(10,13,20,.92) 0%,rgba(10,13,20,.5) 100%)"}}/>
+                  <div style={{position:"relative",zIndex:2,padding:"20px 22px",height:"100%",display:"flex",alignItems:"flex-end",paddingBottom:28,gap:20}}>
                     <div style={{width:90,height:90,minWidth:90,borderRadius:"50%",background:"rgba(141,198,63,.08)",border:"3px solid rgba(141,198,63,.3)",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Oswald',sans-serif",fontSize:36,fontWeight:700,color:"#8dc63f",flexShrink:0,overflow:"hidden"}}>
                       {perfil.avatar_url?<img src={perfil.avatar_url} alt={perfil.nombre} style={{width:"100%",height:"100%",objectFit:"cover"}}/>:perfil.nombre.charAt(0).toUpperCase()}
                     </div>
@@ -1433,24 +1424,63 @@ export default function RadarBody() {
               </div>
             )}
 
-            {/* ═══ TAB HISTORIAL ═══ */}
+           {/* ═══ TAB HISTORIAL — ESTILO CORPORATIVO CODERE ═══ */}
             {tab==="historial"&&(
               <div className="bd-pad">
-                <div className="sec-h" style={{marginBottom:13}}><div className="sec-t">Historial de transacciones</div></div>
-                {transacciones.length===0?<div className="empty"><ScrollText size={28} style={{margin:"0 auto",opacity:.2}}/><div className="empty-t">Sin transacciones aún</div></div>:(
-                  transacciones.map(tx=>{const pos=tx.creditos>0||tx.vidas>0;return(
-                    <div key={tx.id} className="tx-item">
-                      <div style={{width:29,height:29,borderRadius:4,background:pos?"rgba(141,198,63,.1)":"rgba(239,68,68,.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-                        {pos?<TrendingUp size={13} style={{color:"#8dc63f"}}/>:<Activity size={13} style={{color:"#ef4444"}}/>}
+                
+                {/* BANNER TÉCNICO */}
+                <div style={{position:"relative",height:260,overflow:"hidden",marginBottom:24,background:"#0d1119"}}>
+  <img src="/img/kick15.jpg" alt="Historial"
+    style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
+  <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(10,13,20,.92) 0%,rgba(10,13,20,.5) 100%)"}}/>
+  <div style={{position:"relative",zIndex:2,padding:"0 24px",height:"100%",display:"flex",flexDirection:"column",justifyContent:"flex-end",paddingBottom:28}}>
+    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,fontWeight:700,color:"#8dc63f",letterSpacing:2,marginBottom:8,textTransform:"uppercase" as const}}>📋 Historial</div>
+    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:28,fontWeight:700,color:"#fff",lineHeight:1.05,textTransform:"uppercase" as const}}>HISTORIAL DE<br/>MOVIMIENTOS</div>
+  </div>
+</div>
+
+                <div style={{marginBottom:15, borderLeft:"3px solid #8dc63f", paddingLeft:10}}>
+                  <div style={{color:"#8dc63f", fontSize:10, fontWeight:700, letterSpacing:2, fontFamily:"'Oswald', sans-serif", textTransform:"uppercase"}}>Transacciones de cuenta</div>
+                </div>
+
+                {transacciones.length===0?<div className="empty" style={{color:"#4b5563"}}><div className="empty-t">No hay movimientos registrados</div></div>:(
+                  transacciones.map(tx=>{
+                    const pos=tx.creditos>0||tx.vidas>0;
+                    return(
+                      <div key={tx.id} style={{
+                        background:"#111827",
+                        border:"1px solid #1f2937",
+                        marginBottom:6,
+                        padding:"14px 20px",
+                        display:"flex",
+                        alignItems:"center"
+                      }}>
+                        {/* Icono de estado sobrio */}
+                        <div style={{
+                          width:30,height:30,background:pos?"#1a2e1d":"#1a1a1a",
+                          display:"flex",alignItems:"center",justifyContent:"center",
+                          border:`1px solid ${pos?"#8dc63f":"#374151"}`,
+                          marginRight:16
+                        }}>
+                          {pos?<TrendingUp size={14} style={{color:"#8dc63f"}}/>:<Activity size={14} style={{color:"#6b7280"}}/>}
+                        </div>
+                        
+                        {/* Datos de transacción */}
+                        <div style={{flex:1}}>
+                          <div style={{fontSize:11,fontWeight:700,color:"#fff",fontFamily:"'Roboto', sans-serif"}}>{tx.tipo.replace(/_/g," ")}</div>
+                          <div style={{fontSize:10,color:"#9ca3af",marginTop:2,fontFamily:"'Roboto', sans-serif"}}>{tx.descripcion||"—"}</div>
+                        </div>
+                        
+                        {/* Monto y Fecha */}
+                        <div style={{textAlign:"right"}}>
+                          <div style={{fontFamily:"'Oswald', sans-serif",fontSize:14,fontWeight:600,color:pos?"#8dc63f":"#e5e7eb"}}>
+                            {pos?"+":""}{tx.creditos!==0?`${tx.creditos.toLocaleString()} cr`:""}
+                          </div>
+                          <div style={{fontSize:9,color:"#4b5563",marginTop:2,fontFamily:"'Roboto', sans-serif"}}>{new Date(tx.created_at).toLocaleDateString("es-CO")}</div>
+                        </div>
                       </div>
-                      <div style={{flex:1,minWidth:0}}><div className="tx-type">{tx.tipo.replace(/_/g," ")}</div><div className="tx-desc">{tx.descripcion||"—"}</div></div>
-                      <div style={{textAlign:"right",flexShrink:0}}>
-                        {tx.creditos!==0&&<div className={`tx-amt ${tx.creditos>0?"tx-pos":"tx-neg"}`}>{tx.creditos>0?"+":""}{tx.creditos} cr</div>}
-                        {tx.vidas!==0&&<div className={`tx-amt ${tx.vidas>0?"tx-pos":"tx-neg"}`} style={{fontSize:11}}>{tx.vidas>0?"+":""}{tx.vidas} vida{Math.abs(tx.vidas)!==1?"s":""}</div>}
-                        <div style={{fontSize:9,color:"rgba(255,255,255,.2)",marginTop:2}}>{new Date(tx.created_at).toLocaleDateString("es-CO")}</div>
-                      </div>
-                    </div>
-                  );})
+                    );
+                  })
                 )}
               </div>
             )}
@@ -1459,17 +1489,17 @@ export default function RadarBody() {
             {tab==="recargar"&&(
               <div className="bd-pad">
 
-                {/* Banner */}
-                <div style={{position:"relative",height:200,borderRadius:4,overflow:"hidden",marginBottom:16}}>
-                  <img src="https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=1200&q=80&fit=crop" alt=""
-                    style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
-                  <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(10,13,20,.92) 35%,rgba(10,13,20,.15) 100%)"}}/>
-                  <div style={{position:"relative",zIndex:2,padding:"24px 26px",height:"100%",display:"flex",flexDirection:"column" as const,justifyContent:"center"}}>
-                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,fontWeight:700,color:"#8dc63f",letterSpacing:2,marginBottom:8,textTransform:"uppercase" as const}}>⚡ Recarga tu cuenta</div>
-                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:26,fontWeight:700,color:"#fff",lineHeight:1.05,textTransform:"uppercase" as const}}>SIGUE EN EL<br/>JUEGO</div>
-                    <div style={{fontSize:11,color:"rgba(255,255,255,.5)",marginTop:8}}>Compra vidas y créditos para seguir prediciendo</div>
-                  </div>
-                </div>
+                {/* Banner Recargar */}
+                <div style={{position:"relative",height:260,overflow:"hidden",marginBottom:16,background:"#0d1119"}}>
+  <img src="/img/kick1.jpg" alt="Recarga Banner"
+    style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
+  <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(10,13,20,.92) 0%,rgba(10,13,20,.5) 100%)"}}/>
+  <div style={{position:"relative",zIndex:2,padding:"0 24px",height:"100%",display:"flex",flexDirection:"column",justifyContent:"flex-end",paddingBottom:28}}>
+    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,fontWeight:700,color:"#8dc63f",letterSpacing:2,marginBottom:8,textTransform:"uppercase" as const}}>⚡ Recarga tu cuenta</div>
+    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:28,fontWeight:700,color:"#fff",lineHeight:1.05,textTransform:"uppercase" as const}}>SIGUE EN EL<br/>JUEGO</div>
+    <div style={{fontSize:11,color:"rgba(255,255,255,.6)",marginTop:8}}>Compra vidas y créditos para seguir prediciendo</div>
+  </div>
+</div>
 
                 {/* Saldo actual */}
                 <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:14}}>
@@ -1568,64 +1598,42 @@ export default function RadarBody() {
               </div>
             )}
 
-            {/* ═══ TAB REFERIDOS ═══ */}
+            {/* ═══ TAB REFERIDOS (ESTILO DIRECTO) ═══ */}
             {tab==="referidos"&&perfil&&(
               <div className="bd-pad">
+                
+                {/* IMAGEN DE BANNER */}
+                <div style={{position:"relative",height:260,overflow:"hidden",marginBottom:20,background:"#0d1119"}}>
+  <img src="/img/kick12.jpg" alt="Banner"
+    style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover"}}/>
+  <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg,rgba(10,13,20,.92) 0%,rgba(10,13,20,.5) 100%)"}}/>
+  <div style={{position:"relative",zIndex:2,padding:"0 24px",height:"100%",display:"flex",flexDirection:"column",justifyContent:"flex-end",paddingBottom:28}}>
+    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,fontWeight:700,color:"#8dc63f",letterSpacing:2,marginBottom:8,textTransform:"uppercase" as const}}>👥 Mis referidos</div>
+    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:28,fontWeight:700,color:"#fff",lineHeight:1.05,textTransform:"uppercase" as const}}>INVITA Y<br/>GANA</div>
+    <div style={{fontSize:11,color:"rgba(255,255,255,.6)",marginTop:8}}>Gana el {config.comision_referido}% de comisión por cada referido activo</div>
+  </div>
+</div>
+
                 <div className="stats" style={{marginBottom:14}}>
                   <div className="stat-c"><div className="stat-ico ico-g"><Users size={15}/></div><div><div className="stat-v">{referidos.length}</div><div className="stat-l">Referidos</div></div></div>
-                  <div className="stat-c"><div className="stat-ico ico-p"><Gift size={15}/></div><div><div className="stat-v">{totalComisionRef.toLocaleString()}</div><div className="stat-l">Créditos ganados</div></div></div>
-                  <div className="stat-c"><div className="stat-ico ico-a"><TrendingUp size={15}/></div><div><div className="stat-v">{config.comision_referido}%</div><div className="stat-l">Tu comisión</div></div></div>
+                  <div className="stat-c"><div className="stat-ico ico-p"><Gift size={15}/></div><div><div className="stat-v">{totalComisionRef.toLocaleString()}</div><div className="stat-l">Créditos</div></div></div>
+                  <div className="stat-c"><div className="stat-ico ico-a"><TrendingUp size={15}/></div><div><div className="stat-v">{config.comision_referido}%</div><div className="stat-l">Comisión</div></div></div>
                   <div className="stat-c"><div className="stat-ico ico-b"><CheckCircle size={15}/></div><div><div className="stat-v">{gananciasRef.filter(g=>g.estado==="ACREDITADO").length}</div><div className="stat-l">Acreditados</div></div></div>
                 </div>
-                <div className="panel">
-                  <div className="panel-title"><Gift size={13} style={{color:"#8dc63f"}}/> Mi código de referido</div>
-                  <div className="ref-code-box">
+
+                <div className="panel" style={{background:"#111827", border:"1px solid #374151"}}>
+                  <div className="panel-title" style={{color:"#fff", fontSize:11}}><Gift size={13} style={{color:"#8dc63f"}}/> MI CÓDIGO DE REFERIDO</div>
+                  <div className="ref-code-box" style={{background:"#000", border:"1px solid #374151", padding:"20px"}}>
                     <div>
-                      <div style={{fontSize:9,color:"rgba(255,255,255,.3)",letterSpacing:1,textTransform:"uppercase",marginBottom:3}}>Comparte este código o enlace</div>
-                      <div className="ref-code">{perfil.codigo_referido}</div>
+                      <div style={{fontSize:9,color:"#9ca3af",textTransform:"uppercase",marginBottom:5}}>Comparte este código o enlace</div>
+                      <div style={{color:"#fff", fontSize:24, fontWeight:700, letterSpacing:2}}>{perfil.codigo_referido}</div>
                     </div>
-                    <div style={{display:"flex",flexDirection:"column",gap:5}}>
-                      <button className="copy-btn" onClick={()=>{navigator.clipboard.writeText(perfil.codigo_referido);showToast("Código copiado","ok");}}><Copy size={10} style={{marginRight:3}}/>Código</button>
-                      <button className="copy-btn" onClick={()=>{navigator.clipboard.writeText(`${window.location.origin}/register?ref=${perfil.codigo_referido}`);showToast("Enlace copiado","ok");}}><ExternalLink size={10} style={{marginRight:3}}/>Enlace</button>
+                    <div style={{display:"flex",gap:10}}>
+                      <button onClick={()=>{navigator.clipboard.writeText(perfil.codigo_referido);showToast("Copiado","ok");}} style={{background:"#8dc63f",color:"#000",border:"none",fontWeight:700,padding:"8px 16px",cursor:"pointer",fontSize:11}}>COPIAR CÓDIGO</button>
+                      <button onClick={()=>{navigator.clipboard.writeText(`${window.location.origin}/register?ref=${perfil.codigo_referido}`);showToast("Enlace copiado","ok");}} style={{background:"transparent",border:"1px solid #8dc63f",color:"#8dc63f",fontWeight:700,padding:"8px 16px",cursor:"pointer",fontSize:11}}>COMPARTIR ENLACE</button>
                     </div>
-                  </div>
-                  <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:7}}>
-                    {[{paso:"1",desc:"Tu amigo se registra con tu código"},{paso:"2",desc:"Hace su primera recarga"},{paso:"3",desc:`Tú ganas ${config.comision_referido}% automáticamente`}].map(p=>(
-                      <div key={p.paso} style={{background:"rgba(141,198,63,.04)",border:"1px solid rgba(141,198,63,.1)",borderRadius:3,padding:"11px 9px",textAlign:"center"}}>
-                        <div style={{fontFamily:"'Oswald',sans-serif",fontSize:18,fontWeight:700,color:"#8dc63f",marginBottom:5}}>{p.paso}</div>
-                        <div style={{fontSize:10,color:"rgba(255,255,255,.4)",lineHeight:1.5}}>{p.desc}</div>
-                      </div>
-                    ))}
                   </div>
                 </div>
-                <div className="sec-h"><div className="sec-t">Mis referidos activos</div></div>
-                {referidos.length===0?<div className="empty"><Users size={28} style={{margin:"0 auto",opacity:.2}}/><div className="empty-t">Aún no tienes referidos</div><div className="empty-s">Comparte tu código y empieza a ganar créditos</div></div>:(
-                  referidos.map(r=>(
-                    <div key={r.id} className="ref-item">
-                      <div style={{width:32,height:32,borderRadius:"50%",background:"rgba(141,198,63,.08)",border:"1px solid rgba(141,198,63,.2)",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:"#8dc63f",flexShrink:0}}>{r.nombre.charAt(0).toUpperCase()}</div>
-                      <div style={{flex:1,minWidth:0}}>
-                        <div style={{fontFamily:"'Oswald',sans-serif",fontSize:12,fontWeight:600,color:"#fff"}}>{r.nombre}</div>
-                        <div style={{fontSize:10,color:"rgba(255,255,255,.3)",marginTop:1}}>Desde {new Date(r.created_at).toLocaleDateString("es-CO",{day:"2-digit",month:"short"})} · <span style={{color:r.estado_juego==="VIVO"?"#8dc63f":"#f59e0b"}}>{r.estado_juego}</span></div>
-                      </div>
-                      <div style={{fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:"#8dc63f"}}>+{r.comision_generada.toLocaleString()} cr</div>
-                    </div>
-                  ))
-                )}
-                {gananciasRef.length>0&&(
-                  <>
-                    <div className="sec-h" style={{marginTop:14}}><div className="sec-t">Historial de comisiones</div></div>
-                    {gananciasRef.map(g=>(
-                      <div key={g.id} className="tx-item">
-                        <div style={{width:28,height:28,borderRadius:4,background:"rgba(168,85,247,.08)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Gift size={13} style={{color:"#a855f7"}}/></div>
-                        <div style={{flex:1,minWidth:0}}><div className="tx-type">{g.tipo_evento.replace(/_/g," ")}</div><div className="tx-desc">{g.referido_nombre}</div></div>
-                        <div style={{textAlign:"right",flexShrink:0}}>
-                          <div className="tx-amt tx-pos">+{g.creditos_ganados} cr</div>
-                          <span style={{fontSize:8,fontWeight:700,padding:"2px 5px",borderRadius:2,letterSpacing:.5,fontFamily:"'Oswald',sans-serif",background:g.estado==="ACREDITADO"?"rgba(141,198,63,.1)":"rgba(245,158,11,.1)",color:g.estado==="ACREDITADO"?"#8dc63f":"#f59e0b"}}>{g.estado}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </>
-                )}
               </div>
             )}
 

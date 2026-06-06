@@ -66,6 +66,19 @@ const PAISES_INFO: Record<string, { nombre: string; bandera: string; moneda: str
   XX: { nombre:'Otro',      bandera:'🌐',  moneda:'USD', simbolo:'$',  tasa:1    },
 };
 
+const metodosPorPais: Record<string,string[]> = {
+  CO:['nequi','daviplata','bancolombia','efecty','pin'],
+  EC:['pichincha','pacifico','payphone','usdt','pin'],
+  MX:['spei','oxxo','usdt','pin'],
+  AR:['mercadopago','transferencia','usdt','pin'],
+  PE:['yape','plin','bcp','usdt','pin'],
+  VE:['pago_movil','zelle','usdt','pin'],
+  CL:['webpay','transferencia','usdt','pin'],
+  US:['usdt','pin'],
+  ES:['bizum','transferencia','usdt','pin'],
+  XX:['usdt','pin'],
+};
+
 export default function CheckoutPage() {
   const router = useRouter();
   const [pkgId,     setPkgId]     = useState('p5');
@@ -139,7 +152,7 @@ export default function CheckoutPage() {
     setStatus('ok');
   };
 
-  /* PANTALLAS DE ESTADO */
+  /* ═══ PANTALLA OK ═══ */
   if (status === 'ok') return (
     <div style={{minHeight:'100vh',background:'#0a0d14',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Roboto',sans-serif"}}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap');*{box-sizing:border-box;}`}</style>
@@ -163,6 +176,7 @@ export default function CheckoutPage() {
     </div>
   );
 
+  /* ═══ PANTALLA ERROR ═══ */
   if (status === 'error') return (
     <div style={{minHeight:'100vh',background:'#0a0d14',display:'flex',alignItems:'center',justifyContent:'center'}}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap');*{box-sizing:border-box;}`}</style>
@@ -178,354 +192,505 @@ export default function CheckoutPage() {
     </div>
   );
 
-  const metodosPorPais: Record<string,string[]> = {
-    CO:['nequi','daviplata','bancolombia','efecty','pin'],
-    EC:['pichincha','pacifico','payphone','usdt','pin'],
-    MX:['spei','oxxo','usdt','pin'],
-    AR:['mercadopago','transferencia','usdt','pin'],
-    PE:['yape','plin','bcp','usdt','pin'],
-    VE:['pago_movil','zelle','usdt','pin'],
-    CL:['webpay','transferencia','usdt','pin'],
-    US:['usdt','pin'],
-    ES:['bizum','transferencia','usdt','pin'],
-    XX:['usdt','pin'],
-  };
-
   return (
     <div style={{minHeight:'100vh',background:'#0a0d14',fontFamily:"'Roboto',sans-serif",color:'#fff'}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
         *{box-sizing:border-box;margin:0;padding:0;}
-        ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0a0d14}::-webkit-scrollbar-thumb{background:rgba(141,198,63,.3);border-radius:2px}
+        ::-webkit-scrollbar{width:4px}
+        ::-webkit-scrollbar-track{background:#0a0d14}
+        ::-webkit-scrollbar-thumb{background:rgba(141,198,63,.3);border-radius:2px}
 
-        .co-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;max-width:1020px;margin:0 auto;padding:24px 20px 60px}
-        @media(max-width:820px){.co-grid{grid-template-columns:1fr}}
+        /* Layout 3 columnas */
+        .co-outer {
+          display: grid;
+          grid-template-columns: 280px 1fr 260px;
+          gap: 0;
+          min-height: calc(100vh - 52px);
+        }
+        @media(max-width:1200px){ .co-outer { grid-template-columns: 260px 1fr; } .co-col-pub { display:none !important; } }
+        @media(max-width:820px)  { .co-outer { grid-template-columns: 1fr; } .co-col-left { display:none !important; } }
 
         /* Pasos */
-        .pasos{display:flex;align-items:center;gap:0;margin-bottom:28px;}
-        .paso-n{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;font-family:'Oswald',sans-serif;}
-        .paso-lbl{font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:1px;margin-left:6px;white-space:nowrap;}
-        .paso-line{flex:1;height:1px;background:rgba(255,255,255,.07);margin:0 8px;}
+        .paso-n { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; font-family:'Oswald',sans-serif; }
+        .paso-lbl { font-family:'Oswald',sans-serif; font-size:9px; letter-spacing:1.5px; margin-left:6px; white-space:nowrap; text-transform:uppercase; }
+        .paso-line { flex:1; height:1px; background:rgba(255,255,255,.07); margin:0 8px; }
 
         /* Método btn */
-        .metodo-btn{width:100%;background:#111827;border:1px solid rgba(255,255,255,.07);border-radius:4px;padding:13px 15px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .15s;text-align:left;margin-bottom:6px;}
-        .metodo-btn:hover{background:#141e2a;border-color:rgba(255,255,255,.14);}
-        .metodo-btn.active{border-color:#8dc63f;border-left:3px solid #8dc63f;background:rgba(141,198,63,.04);}
+        .metodo-btn { width:100%; background:#111827; border:1px solid rgba(255,255,255,.07); border-radius:4px; padding:12px 14px; display:flex; align-items:center; gap:12px; cursor:pointer; transition:all .15s; text-align:left; margin-bottom:6px; }
+        .metodo-btn:hover { background:#141e2a; border-color:rgba(141,198,63,.25); }
+        .metodo-btn.active { border-color:#8dc63f; border-left:3px solid #8dc63f; background:rgba(141,198,63,.04); }
 
         /* Input */
-        .inp{width:100%;background:#111827;border:1px solid rgba(255,255,255,.08);border-radius:4px;padding:11px 13px;color:#fff;font-size:12px;font-family:'Roboto',sans-serif;outline:none;transition:border-color .15s;margin-bottom:10px;}
-        .inp:focus{border-color:#8dc63f;}
-        .inp::placeholder{color:rgba(255,255,255,.2);}
+        .inp { width:100%; background:#0d1119; border:1px solid rgba(255,255,255,.08); border-radius:4px; padding:10px 12px; color:#fff; font-size:12px; font-family:'Roboto',sans-serif; outline:none; transition:border-color .15s; margin-bottom:10px; }
+        .inp:focus { border-color:#8dc63f; }
+        .inp::placeholder { color:rgba(255,255,255,.2); }
 
-        .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-        @media(max-width:500px){.form-row{grid-template-columns:1fr;}}
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        @media(max-width:500px) { .form-row { grid-template-columns:1fr; } }
 
-        /* Datos de pago */
-        .dato-row{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);}
-        .dato-row:last-child{border-bottom:none;}
-        .dato-lbl{font-size:8px;font-family:'Oswald',sans-serif;color:rgba(255,255,255,.25);letter-spacing:2px;text-transform:uppercase;margin-bottom:3px;}
-        .dato-val{font-family:'Oswald',sans-serif;font-size:14px;font-weight:600;color:#fff;}
-        .dato-val.highlight{font-size:18px;color:#fff;}
-        .copy-btn{background:none;border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:4px 10px;color:rgba(255,255,255,.35);font-size:9px;font-family:'Oswald',sans-serif;cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .12s;flex-shrink:0;}
-        .copy-btn:hover{border-color:rgba(141,198,63,.3);color:#8dc63f;}
-        .copy-btn.green{border-color:rgba(141,198,63,.3);color:#8dc63f;}
+        /* Dato row */
+        .dato-row { padding:10px 0; border-bottom:1px solid rgba(255,255,255,.05); }
+        .dato-row:last-child { border-bottom:none; }
+        .dato-lbl { font-size:8px; font-family:'Oswald',sans-serif; color:rgba(255,255,255,.25); letter-spacing:2px; text-transform:uppercase; margin-bottom:3px; }
+        .dato-val { font-family:'Oswald',sans-serif; font-size:14px; font-weight:600; color:#fff; }
+        .dato-val.highlight { font-size:18px; }
+        .copy-btn { background:none; border:1px solid rgba(255,255,255,.1); border-radius:3px; padding:4px 10px; color:rgba(255,255,255,.35); font-size:9px; font-family:'Oswald',sans-serif; cursor:pointer; display:flex; align-items:center; gap:4px; transition:all .12s; flex-shrink:0; }
+        .copy-btn:hover, .copy-btn.green { border-color:rgba(141,198,63,.3); color:#8dc63f; }
+
+        /* Stat mini */
+        .stat-mini { display:flex; flex-direction:column; align-items:center; padding:12px 8px; background:#0d1119; border:1px solid rgba(255,255,255,.06); border-radius:4px; flex:1; }
+
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
       `}</style>
 
-      {/* TOPBAR */}
-      <div style={{background:'#0b0e1a',borderBottom:'1px solid rgba(255,255,255,.06)',padding:'11px 22px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:50}}>
+      {/* ═══ TOPBAR ═══ */}
+      <div style={{height:52,background:'#0b0e1a',borderBottom:'1px solid rgba(255,255,255,.06)',padding:'0 24px',display:'flex',alignItems:'center',justifyContent:'space-between',position:'sticky',top:0,zIndex:50}}>
         <div style={{display:'flex',alignItems:'center',gap:12}}>
-          <button onClick={()=>router.back()} style={{background:'transparent',border:'1px solid rgba(255,255,255,.08)',borderRadius:3,color:'rgba(255,255,255,.45)',cursor:'pointer',display:'flex',alignItems:'center',gap:5,padding:'6px 10px',fontSize:10,fontFamily:"'Oswald',sans-serif",letterSpacing:1,transition:'all .15s'}}
+          <button onClick={()=>router.back()}
+            style={{background:'transparent',border:'1px solid rgba(255,255,255,.08)',borderRadius:3,color:'rgba(255,255,255,.4)',cursor:'pointer',display:'flex',alignItems:'center',gap:5,padding:'6px 10px',fontSize:9,fontFamily:"'Oswald',sans-serif",letterSpacing:1,transition:'all .15s'}}
             onMouseEnter={e=>{e.currentTarget.style.borderColor='#8dc63f';e.currentTarget.style.color='#8dc63f';}}
-            onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(255,255,255,.08)';e.currentTarget.style.color='rgba(255,255,255,.45)';}}>
-            <ChevronLeft size={13}/> VOLVER
+            onMouseLeave={e=>{e.currentTarget.style.borderColor='rgba(255,255,255,.08)';e.currentTarget.style.color='rgba(255,255,255,.4)';}}>
+            <ChevronLeft size={12}/> VOLVER
           </button>
           <div style={{width:1,height:14,background:'rgba(255,255,255,.08)'}}/>
           {!logoErr
-            ?<img src="/img/kicklast02.png" alt="Kick Last" style={{height:24}} onError={()=>setLogoErr(true)}/>
+            ?<img src="/img/kicklast02.png" alt="Kick Last" style={{height:22}} onError={()=>setLogoErr(true)}/>
             :<span style={{fontFamily:"'Oswald',sans-serif",fontSize:14,fontWeight:700,color:'#8dc63f',letterSpacing:2}}>KICK LAST</span>
           }
-          <span style={{fontFamily:"'Oswald',sans-serif",fontSize:10,color:'rgba(255,255,255,.25)',letterSpacing:1}}>· CHECKOUT</span>
+          <span style={{fontFamily:"'Oswald',sans-serif",fontSize:9,color:'rgba(255,255,255,.2)',letterSpacing:2}}>· CHECKOUT SEGURO</span>
         </div>
-        <div style={{display:'flex',alignItems:'center',gap:5,fontSize:10,color:'#8dc63f',fontFamily:"'Oswald',sans-serif",letterSpacing:1}}>
-          <Lock size={10}/> PAGO SEGURO · {orderId}
+        <div style={{display:'flex',alignItems:'center',gap:6}}>
+          <div style={{display:'flex',alignItems:'center',gap:5,padding:'5px 10px',background:'rgba(141,198,63,.08)',border:'1px solid rgba(141,198,63,.2)',borderRadius:3}}>
+            <Lock size={9} style={{color:'#8dc63f'}}/>
+            <span style={{fontFamily:"'Oswald',sans-serif",fontSize:9,color:'#8dc63f',letterSpacing:1}}>SSL 256-BIT</span>
+          </div>
+          <span style={{fontFamily:"'Oswald',sans-serif",fontSize:9,color:'rgba(255,255,255,.25)',letterSpacing:1}}>{orderId}</span>
         </div>
       </div>
 
-      {/* BANNER */}
-      <div style={{position:'relative',height:180,overflow:'hidden'}}>
+      {/* ═══ HERO BANNER ═══ */}
+      <div style={{position:'relative',height:200,overflow:'hidden'}}>
         <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1400&q=85&fit=crop" alt=""
           style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(90deg,rgba(10,13,20,.97) 25%,rgba(10,13,20,.6) 60%,rgba(10,13,20,.15) 100%)'}}/>
-        <div style={{position:'absolute',bottom:0,left:0,right:0,height:60,background:'linear-gradient(transparent,#0a0d14)'}}/>
-        <div style={{position:'relative',zIndex:2,padding:'0 30px',height:'100%',display:'flex',alignItems:'center',gap:24}}>
-          {/* Info paquete en el banner */}
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(90deg,rgba(10,13,20,.98) 20%,rgba(10,13,20,.75) 55%,rgba(10,13,20,.3) 100%)'}}/>
+        <div style={{position:'absolute',bottom:0,left:0,right:0,height:70,background:'linear-gradient(transparent,#0a0d14)'}}/>
+
+        {/* Contenido hero */}
+        <div style={{position:'relative',zIndex:2,height:'100%',display:'flex',alignItems:'center',padding:'0 32px',gap:32}}>
+          {/* Paquete */}
           <div>
-            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,fontWeight:700,color:'#8dc63f',letterSpacing:2,marginBottom:6,textTransform:'uppercase'}}>Confirmación de compra</div>
-            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:28,fontWeight:700,color:'#fff',lineHeight:1.0,textTransform:'uppercase',marginBottom:6}}>
-              {pkg.vidas} <span style={{color:'#8dc63f'}}>VIDAS</span>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,fontWeight:700,color:'#8dc63f',letterSpacing:3,marginBottom:8,textTransform:'uppercase',display:'flex',alignItems:'center',gap:6}}>
+              <span style={{width:20,height:1,background:'#8dc63f',display:'inline-block'}}/>
+              CONFIRMACIÓN DE COMPRA
             </div>
-            <div style={{fontSize:12,color:'rgba(255,255,255,.4)'}}>{pkg.nombre} · {pais.bandera} {pais.nombre}</div>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:42,fontWeight:700,color:'#fff',lineHeight:.95,textTransform:'uppercase',marginBottom:6}}>
+              {pkg.vidas}<span style={{fontSize:16,color:'rgba(255,255,255,.5)',marginLeft:6,verticalAlign:'middle'}}>VIDAS</span>
+            </div>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:12,color:'rgba(255,255,255,.4)',letterSpacing:1}}>{pkg.nombre}</div>
           </div>
-          {/* Separador */}
-          <div style={{width:1,height:60,background:'rgba(255,255,255,.1)',flexShrink:0}}/>
+
+          {/* Divisor */}
+          <div style={{width:1,height:70,background:'rgba(255,255,255,.1)',flexShrink:0}}/>
+
           {/* Monto */}
           <div>
-            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:4,textTransform:'uppercase'}}>Total a pagar</div>
-            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:32,fontWeight:700,color:'#fff',lineHeight:1}}>{formatMonto()}</div>
-            <div style={{fontSize:10,color:'rgba(255,255,255,.3)',marginTop:3}}>{pais.moneda}</div>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.3)',letterSpacing:3,marginBottom:8,textTransform:'uppercase'}}>TOTAL A PAGAR</div>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:38,fontWeight:700,color:'#8dc63f',lineHeight:.95}}>{formatMonto()}</div>
+            <div style={{fontSize:10,color:'rgba(255,255,255,.3)',marginTop:6}}>{pais.moneda} · {pais.bandera} {pais.nombre}</div>
           </div>
-          {/* Orden */}
+
+          {/* Divisor */}
+          <div style={{width:1,height:70,background:'rgba(255,255,255,.1)',flexShrink:0}}/>
+
+          {/* Stats jugador */}
+          {perfil&&(
+            <div style={{display:'flex',gap:8}}>
+              {[
+                {v:perfil.lives||0,l:'Vidas actuales',c:'#8dc63f'},
+                {v:(perfil.pitchx_balance||0).toLocaleString(),l:'PX disponibles',c:'#38bdf8'},
+                {v:pkg.vidas,l:'Vidas a recibir',c:'#f59e0b'},
+              ].map((s,i)=>(
+                <div key={i} className="stat-mini">
+                  <div style={{fontFamily:"'Oswald',sans-serif",fontSize:20,fontWeight:700,color:s.c,lineHeight:1}}>{s.v}</div>
+                  <div style={{fontSize:8,color:'rgba(255,255,255,.3)',marginTop:4,letterSpacing:1,textTransform:'uppercase',textAlign:'center',lineHeight:1.3}}>{s.l}</div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Orden — extremo derecho */}
           <div style={{marginLeft:'auto',textAlign:'right'}}>
-            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,color:'rgba(255,255,255,.25)',letterSpacing:2,marginBottom:4,textTransform:'uppercase'}}>N° de orden</div>
-            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:14,fontWeight:700,color:'rgba(141,198,63,.8)',letterSpacing:1}}>{orderId}</div>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.2)',letterSpacing:2,marginBottom:4,textTransform:'uppercase'}}>N° DE ORDEN</div>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:16,fontWeight:700,color:'rgba(141,198,63,.7)',letterSpacing:2}}>{orderId}</div>
+            {/* Pasos progress en hero */}
+            <div style={{display:'flex',gap:3,marginTop:10,justifyContent:'flex-end'}}>
+              {[1,2,3].map(n=>(
+                <div key={n} style={{width:28,height:3,borderRadius:2,background:paso>=n?'#8dc63f':'rgba(255,255,255,.1)',transition:'background .3s'}}/>
+              ))}
+            </div>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.25)',letterSpacing:1,marginTop:4,textTransform:'uppercase'}}>
+              PASO {paso} DE 3
+            </div>
           </div>
         </div>
       </div>
 
-      {/* OVERLAY ENVIANDO */}
+      {/* ═══ OVERLAY PROCESANDO ═══ */}
       <AnimatePresence>
         {status==='enviando'&&(
           <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}}
             style={{position:'fixed',inset:0,background:'rgba(10,13,20,.95)',zIndex:200,display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:18}}>
             <motion.div animate={{rotate:360}} transition={{duration:1,repeat:Infinity,ease:'linear'}}
               style={{width:44,height:44,borderRadius:'50%',border:'3px solid rgba(141,198,63,.15)',borderTop:'3px solid #8dc63f'}}/>
-            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:12,letterSpacing:2,color:'rgba(255,255,255,.35)'}}>PROCESANDO...</div>
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:12,letterSpacing:3,color:'rgba(255,255,255,.35)'}}>PROCESANDO...</div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="co-grid">
+      {/* ═══ GRID 3 COLUMNAS ═══ */}
+      <div className="co-outer">
 
-        {/* ═══ COLUMNA IZQUIERDA ═══ */}
-        <div>
+        {/* ── COL IZQUIERDA: RESUMEN PEDIDO ── */}
+        <div className="co-col-left" style={{borderRight:'1px solid rgba(255,255,255,.05)',background:'#0b0e1a'}}>
+          <div style={{position:'sticky',top:52,padding:'20px 18px',display:'flex',flexDirection:'column',gap:14}}>
 
-          {/* PASOS */}
-          <div className="pasos">
+            {/* Header */}
+            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.3)',letterSpacing:2,textTransform:'uppercase',paddingBottom:10,borderBottom:'1px solid rgba(255,255,255,.05)',display:'flex',alignItems:'center',gap:6}}>
+              <span style={{width:3,height:10,background:'#8dc63f',borderRadius:1,display:'inline-block'}}/>
+              Detalle del pedido
+            </div>
+
+            {/* Card paquete */}
+            <div style={{background:'#111827',border:'1px solid rgba(141,198,63,.15)',borderRadius:6,overflow:'hidden'}}>
+              <div style={{background:'rgba(141,198,63,.06)',borderBottom:'1px solid rgba(141,198,63,.1)',padding:'10px 14px',display:'flex',alignItems:'center',gap:8}}>
+                <Heart size={13} style={{color:'#8dc63f'}}/>
+                <span style={{fontFamily:"'Oswald',sans-serif",fontSize:10,color:'#8dc63f',letterSpacing:1,fontWeight:700}}>PAQUETE SELECCIONADO</span>
+              </div>
+              <div style={{padding:'14px'}}>
+                <div style={{fontFamily:"'Oswald',sans-serif",fontSize:32,fontWeight:700,color:'#fff',lineHeight:1}}>{pkg.vidas}</div>
+                <div style={{fontFamily:"'Oswald',sans-serif",fontSize:10,color:'rgba(255,255,255,.35)',letterSpacing:2,marginBottom:10}}>VIDAS</div>
+                <div style={{fontSize:11,color:'rgba(255,255,255,.4)',fontWeight:500}}>{pkg.nombre}</div>
+              </div>
+            </div>
+
+            {/* Desglose */}
+            <div style={{background:'#111827',border:'1px solid rgba(255,255,255,.06)',borderRadius:6,padding:'14px'}}>
+              {[
+                {l:'País',    v:`${pais.bandera} ${pais.nombre}`},
+                {l:'Moneda',  v:pais.moneda},
+                {l:'Base USD',v:`$${pkg.usd}`},
+                {l:'Método',  v:metodo?.nombre||'—'},
+              ].map((row,i)=>(
+                <div key={i} style={{display:'flex',justifyContent:'space-between',padding:'7px 0',borderBottom:i<3?'1px solid rgba(255,255,255,.04)':'none',fontSize:11}}>
+                  <span style={{color:'rgba(255,255,255,.35)'}}>{row.l}</span>
+                  <span style={{color:'#fff',fontFamily:"'Oswald',sans-serif",fontSize:12}}>{row.v}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Total */}
+            <div style={{background:'linear-gradient(135deg,rgba(141,198,63,.08) 0%,rgba(141,198,63,.03) 100%)',border:'1px solid rgba(141,198,63,.2)',borderRadius:6,padding:'16px',textAlign:'center'}}>
+              <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,letterSpacing:3,color:'rgba(255,255,255,.3)',marginBottom:6,textTransform:'uppercase'}}>Total a pagar</div>
+              <div style={{fontFamily:"'Oswald',sans-serif",fontSize:30,fontWeight:700,color:'#fff',lineHeight:1}}>{formatMonto()}</div>
+              <div style={{fontSize:9,color:'rgba(255,255,255,.3)',marginTop:4}}>{pais.moneda}</div>
+            </div>
+
+            {/* Progreso pasos */}
+            <div style={{display:'flex',flexDirection:'column',gap:6}}>
+              {[{n:1,l:'Método de pago'},{n:2,l:metodo?.tipo==='pin'?'Canjear PIN':'Instrucciones'},{n:3,l:'Comprobante'}].map(p=>(
+                <div key={p.n} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 10px',background:paso===p.n?'rgba(141,198,63,.06)':'transparent',border:`1px solid ${paso===p.n?'rgba(141,198,63,.2)':'rgba(255,255,255,.04)'}`,borderRadius:4,transition:'all .2s'}}>
+                  <div style={{width:22,height:22,borderRadius:'50%',background:paso>p.n?'#8dc63f':paso===p.n?'rgba(141,198,63,.15)':'rgba(255,255,255,.05)',border:`1px solid ${paso>=p.n?'rgba(141,198,63,.4)':'rgba(255,255,255,.1)'}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:10,fontFamily:"'Oswald',sans-serif",fontWeight:700,color:paso>p.n?'#0a0d14':paso===p.n?'#8dc63f':'rgba(255,255,255,.25)'}}>
+                    {paso>p.n?<Check size={11} strokeWidth={3}/>:p.n}
+                  </div>
+                  <span style={{fontFamily:"'Oswald',sans-serif",fontSize:10,color:paso===p.n?'#8dc63f':paso>p.n?'rgba(255,255,255,.4)':'rgba(255,255,255,.2)',letterSpacing:.5}}>{p.l}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Seguridad */}
+            <div style={{borderTop:'1px solid rgba(255,255,255,.05)',paddingTop:12,display:'flex',flexDirection:'column',gap:5}}>
+              {[{icon:<Lock size={9}/>,l:'Transacción cifrada SSL'},{icon:<Shield size={9}/>,l:'Datos protegidos'},{icon:<Globe size={9}/>,l:'Soporte 24/7'}].map((item,i)=>(
+                <div key={i} style={{display:'flex',alignItems:'center',gap:7,fontSize:10,color:'rgba(255,255,255,.2)'}}>
+                  <span style={{color:'rgba(141,198,63,.5)'}}>{item.icon}</span>{item.l}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── COL CENTRAL: FLUJO DE PAGO ── */}
+        <div style={{padding:'28px 32px',overflowY:'auto'}}>
+
+          {/* Pasos header */}
+          <div style={{display:'flex',alignItems:'center',gap:0,marginBottom:28}}>
             {([{n:1,label:'MÉTODO'},{n:2,label:metodo?.tipo==='pin'?'CANJEAR':'INSTRUCCIONES'},{n:3,label:'COMPROBANTE'}] as const).map((p,i)=>(
               <React.Fragment key={p.n}>
                 <div style={{display:'flex',alignItems:'center',gap:6}}>
                   <div className="paso-n" style={{background:paso>=p.n?'#8dc63f':'rgba(255,255,255,.06)',color:paso>=p.n?'#0a0d14':'rgba(255,255,255,.3)'}}>
                     {paso>p.n?<Check size={12} strokeWidth={3}/>:p.n}
                   </div>
-                  <span className="paso-lbl" style={{color:paso===p.n?'#8dc63f':'rgba(255,255,255,.3)'}}>{p.label}</span>
+                  <span className="paso-lbl" style={{color:paso===p.n?'#8dc63f':paso>p.n?'rgba(255,255,255,.3)':'rgba(255,255,255,.2)'}}>{p.label}</span>
                 </div>
                 {i<2&&<div className="paso-line" style={{background:paso>p.n?'rgba(141,198,63,.3)':'rgba(255,255,255,.07)'}}/>}
               </React.Fragment>
             ))}
           </div>
 
-          {/* PASO 1 — MÉTODO */}
+          {/* ─── PASO 1: MÉTODO ─── */}
           {paso===1&&(
-            <motion.div initial={{opacity:0,x:12}} animate={{opacity:1,x:0}}>
-              <div style={{fontFamily:"'Oswald',sans-serif",fontSize:16,fontWeight:600,color:'#fff',marginBottom:4}}>Selecciona tu método de pago</div>
-              <div style={{fontSize:12,color:'rgba(255,255,255,.35)',marginBottom:18}}>{pais.bandera} Métodos disponibles para {pais.nombre}</div>
-              {Object.keys(METODOS_DATOS).filter(mid=>(metodosPorPais[paisCode]||metodosPorPais['XX']).includes(mid)).map(mid=>{
-                const m=METODOS_DATOS[mid];
-                return(
-                  <button key={mid} className={`metodo-btn ${metodoSel===mid?'active':''}`} onClick={()=>setMetodoSel(mid)}>
-                    <div style={{width:40,height:40,borderRadius:'50%',background:`${m.color}15`,border:`1.5px solid ${m.color}44`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:mid==='pin'?16:13,fontWeight:900,color:m.color,fontFamily:"'Oswald',sans-serif",flexShrink:0}}>
-                      {m.icono}
-                    </div>
-                    <div style={{flex:1}}>
-                      <div style={{fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:600,color:'#fff'}}>{m.nombre}</div>
-                      <div style={{fontSize:10,color:'rgba(255,255,255,.3)',marginTop:1}}>{mid==='usdt'||mid==='usdt_ec'?'⚠️ Solo red TRC-20':m.tipo==='pin'?'⚡ Acreditación inmediata':'Transferencia manual'}</div>
-                    </div>
-                    {metodoSel===mid&&(
-                      <motion.div initial={{scale:0}} animate={{scale:1}}
-                        style={{width:20,height:20,borderRadius:'50%',background:'#8dc63f',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                        <Check size={11} color="#0a0d14" strokeWidth={3}/>
-                      </motion.div>
-                    )}
-                  </button>
-                );
-              })}
+            <motion.div initial={{opacity:0,x:10}} animate={{opacity:1,x:0}}>
+              <div style={{marginBottom:20}}>
+                <div style={{fontFamily:"'Oswald',sans-serif",fontSize:18,fontWeight:700,color:'#fff',marginBottom:4}}>Selecciona tu método de pago</div>
+                <div style={{fontSize:12,color:'rgba(255,255,255,.35)'}}>{pais.bandera} Métodos disponibles para {pais.nombre}</div>
+              </div>
+
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:8,marginBottom:20}}>
+                {Object.keys(METODOS_DATOS)
+                  .filter(mid=>(metodosPorPais[paisCode]||metodosPorPais['XX']).includes(mid))
+                  .map(mid=>{
+                    const m=METODOS_DATOS[mid];
+                    const isActive=metodoSel===mid;
+                    return(
+                      <button key={mid} className={`metodo-btn ${isActive?'active':''}`} onClick={()=>setMetodoSel(mid)}
+                        style={{background:isActive?'rgba(141,198,63,.05)':'#111827',border:`1px solid ${isActive?'#8dc63f':'rgba(255,255,255,.07)'}`,borderLeft:isActive?'3px solid #8dc63f':undefined,borderRadius:6,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,cursor:'pointer',transition:'all .15s',textAlign:'left',width:'100%',marginBottom:0}}>
+                        {/* Icono método */}
+                        <div style={{width:44,height:44,borderRadius:8,background:`${m.color}18`,border:`1.5px solid ${m.color}35`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:mid.length<=2?16:11,fontWeight:900,color:m.color,fontFamily:"'Oswald',sans-serif",flexShrink:0,letterSpacing:0}}>
+                          {m.icono}
+                        </div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <div style={{fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:600,color:'#fff',marginBottom:3}}>{m.nombre}</div>
+                          <div style={{fontSize:10,color:'rgba(255,255,255,.3)',display:'flex',alignItems:'center',gap:4}}>
+                            {mid==='pin'&&<span style={{color:'#8dc63f'}}>⚡</span>}
+                            {(mid==='usdt'||mid==='usdt_ec')&&<span style={{color:'#f59e0b'}}>⚠️</span>}
+                            {mid==='pin'?'Acreditación inmediata':(mid==='usdt'||mid==='usdt_ec')?'Solo red TRC-20':'Transferencia · hasta 4h'}
+                          </div>
+                        </div>
+                        {isActive&&(
+                          <motion.div initial={{scale:0}} animate={{scale:1}}
+                            style={{width:22,height:22,borderRadius:'50%',background:'#8dc63f',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                            <Check size={12} color="#0a0d14" strokeWidth={3}/>
+                          </motion.div>
+                        )}
+                      </button>
+                    );
+                  })}
+              </div>
+
               <button onClick={()=>{if(metodoSel)setPaso(2);}} disabled={!metodoSel}
-                style={{marginTop:16,width:'100%',padding:'13px',borderRadius:4,border:'none',background:metodoSel?'#8dc63f':'rgba(255,255,255,.05)',color:metodoSel?'#0a0d14':'rgba(255,255,255,.2)',fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,letterSpacing:1,cursor:metodoSel?'pointer':'not-allowed',display:'flex',alignItems:'center',justifyContent:'center',gap:7,transition:'all .15s',textTransform:'uppercase'}}>
+                style={{width:'100%',padding:'14px',borderRadius:4,border:'none',background:metodoSel?'#8dc63f':'rgba(255,255,255,.05)',color:metodoSel?'#0a0d14':'rgba(255,255,255,.2)',fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,letterSpacing:1.5,cursor:metodoSel?'pointer':'not-allowed',display:'flex',alignItems:'center',justifyContent:'center',gap:7,transition:'all .15s',textTransform:'uppercase',boxShadow:metodoSel?'0 4px 20px rgba(141,198,63,.2)':'none'}}>
                 <ArrowRight size={14}/> CONTINUAR
               </button>
             </motion.div>
           )}
 
-          {/* PASO 2 — INSTRUCCIONES O PIN */}
+          {/* ─── PASO 2: INSTRUCCIONES O PIN ─── */}
           {paso===2&&metodo&&(
-            <motion.div initial={{opacity:0,x:12}} animate={{opacity:1,x:0}}>
+            <motion.div initial={{opacity:0,x:10}} animate={{opacity:1,x:0}}>
               {metodo.tipo==='pin'?(
                 <div>
-                  <div style={{fontFamily:"'Oswald',sans-serif",fontSize:16,fontWeight:600,color:'#fff',marginBottom:4}}>Canjear Código PIN</div>
-                  <div style={{fontSize:12,color:'rgba(255,255,255,.35)',marginBottom:18}}>Ingresa el código que recibiste de un distribuidor autorizado.</div>
-                  <div style={{background:'rgba(141,198,63,.04)',border:'1px solid rgba(141,198,63,.15)',borderRadius:4,padding:'12px 14px',marginBottom:18,display:'flex',gap:9}}>
-                    <Zap size={14} style={{color:'#8dc63f',flexShrink:0,marginTop:2}}/>
-                    <div style={{fontSize:12,color:'rgba(255,255,255,.5)',lineHeight:1.6}}>Las vidas y PitchX se acreditarán de forma <strong style={{color:'#8dc63f'}}>inmediata y automática</strong> al validar el código.</div>
-                  </div>
-                  <form onSubmit={canjearPin} style={{display:'flex',flexDirection:'column',gap:10}}>
+                  <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:20}}>
+                    <div style={{width:48,height:48,borderRadius:10,background:'rgba(141,198,63,.1)',border:'1px solid rgba(141,198,63,.3)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,flexShrink:0}}>⚡</div>
                     <div>
-                      <div style={{fontSize:9,fontFamily:"'Oswald',sans-serif",color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:6}}>CÓDIGO DE ACCESO</div>
-                      <input className="inp" type="text" placeholder="LASTKICK-XXXX-XXXX"
-                        value={pinCode} onChange={e=>setPinCode(e.target.value.toUpperCase())}
-                        style={{fontFamily:"'Oswald',sans-serif",fontSize:16,letterSpacing:3,textAlign:'center',marginBottom:0}} required/>
+                      <div style={{fontFamily:"'Oswald',sans-serif",fontSize:18,fontWeight:700,color:'#fff',marginBottom:3}}>Canjear Código PIN</div>
+                      <div style={{fontSize:12,color:'rgba(255,255,255,.35)'}}>Acreditación inmediata y automática</div>
                     </div>
-                    <button type="submit" style={{padding:'13px',background:'#8dc63f',border:'none',borderRadius:4,fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#0a0d14',cursor:'pointer',letterSpacing:1,display:'flex',alignItems:'center',justifyContent:'center',gap:7,textTransform:'uppercase'}}>
+                  </div>
+                  <div style={{background:'rgba(141,198,63,.04)',border:'1px solid rgba(141,198,63,.15)',borderRadius:6,padding:'14px 16px',marginBottom:20,display:'flex',gap:10}}>
+                    <Zap size={14} style={{color:'#8dc63f',flexShrink:0,marginTop:1}}/>
+                    <div style={{fontSize:12,color:'rgba(255,255,255,.5)',lineHeight:1.6}}>Ingresa el código que recibiste de un distribuidor autorizado. Las vidas se acreditarán de forma <strong style={{color:'#8dc63f'}}>inmediata y automática</strong>.</div>
+                  </div>
+                  <form onSubmit={canjearPin}>
+                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:8,textTransform:'uppercase'}}>Código de acceso</div>
+                    <input className="inp" type="text" placeholder="LASTKICK-XXXX-XXXX"
+                      value={pinCode} onChange={e=>setPinCode(e.target.value.toUpperCase())}
+                      style={{fontFamily:"'Oswald',sans-serif",fontSize:18,letterSpacing:4,textAlign:'center',marginBottom:16,padding:'14px'}} required/>
+                    <button type="submit" style={{width:'100%',padding:'14px',background:'#8dc63f',border:'none',borderRadius:4,fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#0a0d14',cursor:'pointer',letterSpacing:1.5,display:'flex',alignItems:'center',justifyContent:'center',gap:7,textTransform:'uppercase',boxShadow:'0 4px 20px rgba(141,198,63,.2)'}}>
                       <Zap size={14}/> VALIDAR Y CANJEAR
                     </button>
                   </form>
                 </div>
               ):(
                 <div>
-                  <div style={{display:'flex',alignItems:'center',gap:11,marginBottom:18}}>
-                    <div style={{width:42,height:42,borderRadius:'50%',background:`${metodo.color}15`,border:`1.5px solid ${metodo.color}44`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:16,fontWeight:900,color:metodo.color,fontFamily:"'Oswald',sans-serif",flexShrink:0}}>{metodo.icono}</div>
+                  <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:20}}>
+                    <div style={{width:48,height:48,borderRadius:10,background:`${metodo.color}18`,border:`1.5px solid ${metodo.color}35`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:18,fontWeight:900,color:metodo.color,fontFamily:"'Oswald',sans-serif",flexShrink:0}}>{metodo.icono}</div>
                     <div>
-                      <div style={{fontFamily:"'Oswald',sans-serif",fontSize:16,fontWeight:600,color:'#fff'}}>Paga con {metodo.nombre}</div>
-                      <div style={{fontSize:11,color:'rgba(255,255,255,.35)',marginTop:1}}>Realiza el pago y luego sube tu comprobante</div>
+                      <div style={{fontFamily:"'Oswald',sans-serif",fontSize:18,fontWeight:700,color:'#fff',marginBottom:3}}>Paga con {metodo.nombre}</div>
+                      <div style={{fontSize:12,color:'rgba(255,255,255,.35)'}}>Sigue las instrucciones y envía tu comprobante</div>
                     </div>
                   </div>
-                  {/* Datos de pago */}
-                  <div style={{background:'#111827',border:'1px solid rgba(255,255,255,.07)',borderRadius:4,padding:'16px 18px',marginBottom:14}}>
-                    <div style={{fontSize:8,fontFamily:"'Oswald',sans-serif",color:'rgba(255,255,255,.25)',letterSpacing:2,marginBottom:12,textTransform:'uppercase'}}>Datos de pago</div>
-                    {metodo.tipo==='transferencia'&&(
-                      <>
-                        {[{label:'TITULAR',valor:metodo.titular,copy:false,highlight:false},{label:'CUENTA / NÚMERO',valor:metodo.cuenta,copy:true,highlight:true},{label:'BANCO',valor:metodo.banco,copy:false,highlight:false}].map((row,i)=>row.valor&&(
-                          <div key={i} className="dato-row">
-                            <div className="dato-lbl">{row.label}</div>
+
+                  {/* Card datos pago */}
+                  <div style={{background:'#111827',border:'1px solid rgba(255,255,255,.07)',borderRadius:6,overflow:'hidden',marginBottom:14}}>
+                    <div style={{background:'rgba(255,255,255,.03)',borderBottom:'1px solid rgba(255,255,255,.06)',padding:'10px 16px'}}>
+                      <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.3)',letterSpacing:2,textTransform:'uppercase'}}>Datos de pago</div>
+                    </div>
+                    <div style={{padding:'16px'}}>
+                      {metodo.tipo==='transferencia'&&(
+                        <>
+                          {[{label:'TITULAR',valor:metodo.titular,copy:false,big:false},{label:'CUENTA / NÚMERO',valor:metodo.cuenta,copy:true,big:true},{label:'BANCO',valor:metodo.banco,copy:false,big:false}].map((row,i)=>row.valor&&(
+                            <div key={i} className="dato-row">
+                              <div className="dato-lbl">{row.label}</div>
+                              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                                <div className={`dato-val ${row.big?'highlight':''}`}>{row.valor}</div>
+                                {row.copy&&<button className={`copy-btn ${copied?'green':''}`} onClick={()=>copiar(row.valor!)}><Copy size={10}/>{copied?'COPIADO':'COPIAR'}</button>}
+                              </div>
+                            </div>
+                          ))}
+                          <div className="dato-row" style={{borderTop:'1px solid rgba(255,255,255,.07)',paddingTop:12,marginTop:4}}>
+                            <div className="dato-lbl">MONTO EXACTO</div>
                             <div style={{display:'flex',alignItems:'center',gap:8}}>
-                              <div className={`dato-val ${row.highlight?'highlight':''}`}>{row.valor}</div>
-                              {row.copy&&<button className={`copy-btn ${copied?'green':''}`} onClick={()=>copiar(row.valor!)}><Copy size={10}/>{copied?'COPIADO':'COPIAR'}</button>}
+                              <div style={{fontFamily:"'Oswald',sans-serif",fontSize:24,fontWeight:700,color:'#8dc63f',flex:1}}>{formatMonto()} <span style={{fontSize:11,color:'rgba(255,255,255,.3)'}}>{pais.moneda}</span></div>
+                              <button className="copy-btn green" onClick={()=>copiar(formatMonto().replace(/[^\d,.]/g,''))}><Copy size={10}/> COPIAR</button>
                             </div>
                           </div>
-                        ))}
-                        <div className="dato-row" style={{borderTop:'1px solid rgba(255,255,255,.07)',paddingTop:12,marginTop:4}}>
-                          <div className="dato-lbl">MONTO EXACTO A PAGAR</div>
-                          <div style={{display:'flex',alignItems:'center',gap:8}}>
-                            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:22,fontWeight:700,color:'#8dc63f',flex:1}}>{formatMonto()} <span style={{fontSize:11,color:'rgba(255,255,255,.35)'}}>{pais.moneda}</span></div>
-                            <button className={`copy-btn green`} onClick={()=>copiar(formatMonto().replace(/[^\d,.]/g,''))}><Copy size={10}/> COPIAR</button>
+                        </>
+                      )}
+                      {metodo.tipo==='crypto'&&(
+                        <>
+                          <div style={{background:'rgba(239,68,68,.05)',border:'1px solid rgba(239,68,68,.18)',borderRadius:4,padding:'10px 12px',display:'flex',gap:8,marginBottom:14}}>
+                            <AlertTriangle size={13} style={{color:'#ef4444',flexShrink:0,marginTop:1}}/>
+                            <div style={{fontSize:11,color:'rgba(239,68,68,.8)',lineHeight:1.5}}>Red: <strong>{metodo.red}</strong>. Envíos por redes incorrectas NO son recuperables.</div>
                           </div>
-                        </div>
-                      </>
-                    )}
-                    {metodo.tipo==='crypto'&&(
-                      <>
-                        <div style={{background:'rgba(239,68,68,.05)',border:'1px solid rgba(239,68,68,.18)',borderRadius:3,padding:'9px 12px',display:'flex',gap:7,marginBottom:12}}>
-                          <AlertTriangle size={13} style={{color:'#ef4444',flexShrink:0}}/>
-                          <div style={{fontSize:11,color:'rgba(239,68,68,.8)',lineHeight:1.5}}>Red: <strong>{metodo.red}</strong>. Envíos por redes incorrectas NO son recuperables.</div>
-                        </div>
-                        <div className="dato-row">
-                          <div className="dato-lbl">WALLET DESTINO (TRC-20)</div>
-                          <div style={{display:'flex',alignItems:'center',gap:8}}>
-                            <div style={{fontFamily:'monospace',fontSize:11,color:'#fff',flex:1,wordBreak:'break-all'}}>{metodo.wallet}</div>
-                            <button className="copy-btn green" onClick={()=>copiar(metodo.wallet!)}><Copy size={10}/>{copied?'OK':'COPIAR'}</button>
+                          <div className="dato-row">
+                            <div className="dato-lbl">WALLET DESTINO (TRC-20)</div>
+                            <div style={{display:'flex',alignItems:'center',gap:8}}>
+                              <div style={{fontFamily:'monospace',fontSize:11,color:'#fff',flex:1,wordBreak:'break-all'}}>{metodo.wallet}</div>
+                              <button className="copy-btn green" onClick={()=>copiar(metodo.wallet!)}><Copy size={10}/>{copied?'OK':'COPIAR'}</button>
+                            </div>
                           </div>
-                        </div>
-                        <div className="dato-row">
-                          <div className="dato-lbl">MONTO</div>
-                          <div style={{fontFamily:"'Oswald',sans-serif",fontSize:20,fontWeight:700,color:'#26A17B'}}>{pkg.usd} USDT</div>
-                        </div>
-                      </>
-                    )}
+                          <div className="dato-row">
+                            <div className="dato-lbl">MONTO</div>
+                            <div style={{fontFamily:"'Oswald',sans-serif",fontSize:22,fontWeight:700,color:'#26A17B'}}>{pkg.usd} USDT</div>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
+
                   {/* Instrucción */}
-                  <div style={{background:'rgba(245,158,11,.04)',border:'1px solid rgba(245,158,11,.15)',borderRadius:4,padding:'11px 13px',display:'flex',gap:7,marginBottom:18}}>
+                  <div style={{background:'rgba(245,158,11,.04)',border:'1px solid rgba(245,158,11,.15)',borderRadius:4,padding:'12px 14px',display:'flex',gap:8,marginBottom:20}}>
                     <Shield size={13} style={{color:'#f59e0b',flexShrink:0,marginTop:1}}/>
                     <div style={{fontSize:11,color:'rgba(245,158,11,.75)',lineHeight:1.6}}>{metodo.instruccion}</div>
                   </div>
-                  <button onClick={()=>setPaso(3)} style={{width:'100%',padding:'13px',background:'#8dc63f',border:'none',borderRadius:4,fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#0a0d14',cursor:'pointer',letterSpacing:1,display:'flex',alignItems:'center',justifyContent:'center',gap:7,textTransform:'uppercase'}}>
+
+                  <button onClick={()=>setPaso(3)}
+                    style={{width:'100%',padding:'14px',background:'#8dc63f',border:'none',borderRadius:4,fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#0a0d14',cursor:'pointer',letterSpacing:1.5,display:'flex',alignItems:'center',justifyContent:'center',gap:7,textTransform:'uppercase',boxShadow:'0 4px 20px rgba(141,198,63,.2)'}}>
                     <ArrowRight size={14}/> YA REALICÉ EL PAGO
                   </button>
                 </div>
               )}
-              <button onClick={()=>{setPaso(1);setMetodoSel(null);}} style={{marginTop:12,background:'none',border:'none',color:'rgba(255,255,255,.22)',fontSize:11,cursor:'pointer',display:'flex',alignItems:'center',gap:4,fontFamily:"'Oswald',sans-serif",letterSpacing:.5}}>
-                <ChevronLeft size={13}/> Cambiar método
+              <button onClick={()=>{setPaso(1);setMetodoSel(null);}}
+                style={{marginTop:12,background:'none',border:'none',color:'rgba(255,255,255,.2)',fontSize:10,cursor:'pointer',display:'flex',alignItems:'center',gap:4,fontFamily:"'Oswald',sans-serif",letterSpacing:.5}}>
+                <ChevronLeft size={12}/> Cambiar método
               </button>
             </motion.div>
           )}
 
-          {/* PASO 3 — COMPROBANTE */}
+          {/* ─── PASO 3: COMPROBANTE ─── */}
           {paso===3&&metodo&&(
-            <motion.div initial={{opacity:0,x:12}} animate={{opacity:1,x:0}}>
-              <div style={{fontFamily:"'Oswald',sans-serif",fontSize:16,fontWeight:600,color:'#fff',marginBottom:4}}>Enviar comprobante</div>
-              <div style={{fontSize:12,color:'rgba(255,255,255,.35)',marginBottom:18}}>Completa tus datos y el número de referencia del pago.</div>
+            <motion.div initial={{opacity:0,x:10}} animate={{opacity:1,x:0}}>
+              <div style={{marginBottom:20}}>
+                <div style={{fontFamily:"'Oswald',sans-serif",fontSize:18,fontWeight:700,color:'#fff',marginBottom:4}}>Enviar comprobante</div>
+                <div style={{fontSize:12,color:'rgba(255,255,255,.35)'}}>Completa tus datos para confirmar el pago</div>
+              </div>
+
               <form onSubmit={enviarComprobante} style={{display:'flex',flexDirection:'column',gap:0}}>
                 <div className="form-row" style={{marginBottom:0}}>
                   <div>
-                    <div style={{fontSize:9,fontFamily:"'Oswald',sans-serif",color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:5,display:'flex',alignItems:'center',gap:4}}><User size={9}/> NOMBRE COMPLETO</div>
+                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:5,display:'flex',alignItems:'center',gap:4,textTransform:'uppercase'}}><User size={8}/> Nombre completo</div>
                     <input className="inp" type="text" value={fNombre} onChange={e=>setFNombre(e.target.value)} placeholder="Tu nombre completo" required/>
                   </div>
                   <div>
-                    <div style={{fontSize:9,fontFamily:"'Oswald',sans-serif",color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:5,display:'flex',alignItems:'center',gap:4}}><Hash size={9}/> ALIAS / USUARIO</div>
+                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:5,display:'flex',alignItems:'center',gap:4,textTransform:'uppercase'}}><Hash size={8}/> Alias / Usuario</div>
                     <input className="inp" type="text" value={fAlias} onChange={e=>setFAlias(e.target.value)} placeholder="@tu_alias" required/>
                   </div>
                 </div>
                 <div className="form-row">
                   <div>
-                    <div style={{fontSize:9,fontFamily:"'Oswald',sans-serif",color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:5,display:'flex',alignItems:'center',gap:4}}><Ticket size={9}/> CÓDIGO DE JUGADOR</div>
+                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:5,display:'flex',alignItems:'center',gap:4,textTransform:'uppercase'}}><Ticket size={8}/> Código de jugador</div>
                     <input className="inp" type="text" value={fCodigo} onChange={e=>setFCodigo(e.target.value)} placeholder="LK-XXXXXX" required/>
                   </div>
                   <div>
-                    <div style={{fontSize:9,fontFamily:"'Oswald',sans-serif",color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:5,display:'flex',alignItems:'center',gap:4}}><FileText size={9}/> N° REFERENCIA</div>
+                    <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.3)',letterSpacing:2,marginBottom:5,display:'flex',alignItems:'center',gap:4,textTransform:'uppercase'}}><FileText size={8}/> N° Referencia</div>
                     <input className="inp" type="text" value={fRef} onChange={e=>setFRef(e.target.value)} placeholder="Código de la transacción" required/>
                   </div>
                 </div>
-                <div style={{background:'rgba(141,198,63,.03)',border:'1px solid rgba(141,198,63,.1)',borderRadius:4,padding:'11px 13px',display:'flex',gap:7,marginBottom:14}}>
-                  <Shield size={12} style={{color:'#8dc63f',flexShrink:0}}/>
-                  <div style={{fontSize:11,color:'rgba(255,255,255,.35)',lineHeight:1.5}}>Tu pedido <strong style={{color:'#fff'}}>{orderId}</strong> será verificado en máximo 2-4 horas. Recibirás una notificación cuando se acrediten tus vidas.</div>
+
+                <div style={{background:'rgba(141,198,63,.03)',border:'1px solid rgba(141,198,63,.1)',borderRadius:4,padding:'12px 14px',display:'flex',gap:8,marginBottom:16}}>
+                  <Shield size={12} style={{color:'#8dc63f',flexShrink:0,marginTop:1}}/>
+                  <div style={{fontSize:11,color:'rgba(255,255,255,.35)',lineHeight:1.5}}>
+                    Pedido <strong style={{color:'#fff'}}>{orderId}</strong> · Verificación en máx. 2-4 horas. Recibirás una notificación al acreditarse tus vidas.
+                  </div>
                 </div>
-                <button type="submit" style={{padding:'13px',background:'#8dc63f',border:'none',borderRadius:4,fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#0a0d14',cursor:'pointer',letterSpacing:1,display:'flex',alignItems:'center',justifyContent:'center',gap:7,textTransform:'uppercase',boxShadow:'0 4px 16px rgba(141,198,63,.2)'}}>
+
+                <button type="submit"
+                  style={{padding:'14px',background:'#8dc63f',border:'none',borderRadius:4,fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#0a0d14',cursor:'pointer',letterSpacing:1.5,display:'flex',alignItems:'center',justifyContent:'center',gap:7,textTransform:'uppercase',boxShadow:'0 4px 20px rgba(141,198,63,.25)'}}>
                   <Check size={14} strokeWidth={3}/> ENVIAR COMPROBANTE
                 </button>
               </form>
-              <button onClick={()=>setPaso(2)} style={{marginTop:12,background:'none',border:'none',color:'rgba(255,255,255,.22)',fontSize:11,cursor:'pointer',display:'flex',alignItems:'center',gap:4,fontFamily:"'Oswald',sans-serif",letterSpacing:.5}}>
-                <ChevronLeft size={13}/> Volver
+
+              <button onClick={()=>setPaso(2)}
+                style={{marginTop:12,background:'none',border:'none',color:'rgba(255,255,255,.2)',fontSize:10,cursor:'pointer',display:'flex',alignItems:'center',gap:4,fontFamily:"'Oswald',sans-serif",letterSpacing:.5}}>
+                <ChevronLeft size={12}/> Volver
               </button>
             </motion.div>
           )}
         </div>
 
-        {/* ═══ COLUMNA DERECHA — RESUMEN ═══ */}
-        <div>
-          <div style={{background:'#111827',border:'1px solid rgba(255,255,255,.07)',borderRadius:4,overflow:'hidden',position:'sticky',top:68}}>
-            <div style={{background:'rgba(141,198,63,.05)',borderBottom:'1px solid rgba(141,198,63,.1)',padding:'14px 18px'}}>
-              <div style={{fontFamily:"'Oswald',sans-serif",fontSize:9,letterSpacing:2,color:'#8dc63f',marginBottom:2,textTransform:'uppercase'}}>Detalle del pedido</div>
-              <div style={{fontFamily:"'Oswald',sans-serif",fontSize:11,color:'rgba(255,255,255,.35)',letterSpacing:1}}>{orderId}</div>
-            </div>
-            <div style={{padding:'18px'}}>
-              {/* Paquete */}
-              <div style={{display:'flex',alignItems:'center',gap:11,marginBottom:14,padding:'12px 13px',background:'rgba(255,255,255,.02)',borderRadius:4,border:'1px solid rgba(255,255,255,.06)'}}>
-                <div style={{width:44,height:44,borderRadius:4,background:'rgba(141,198,63,.08)',border:'1px solid rgba(141,198,63,.2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                  <Heart size={18} style={{color:'#8dc63f'}}/>
-                </div>
-                <div>
-                  <div style={{fontFamily:"'Oswald',sans-serif",fontSize:19,fontWeight:700,color:'#fff'}}>{pkg.vidas} <span style={{fontSize:10,color:'rgba(255,255,255,.35)'}}>VIDAS</span></div>
-                  <div style={{fontSize:10,color:'rgba(255,255,255,.3)',marginTop:1}}>{pkg.nombre}</div>
-                </div>
-              </div>
-              {/* Líneas */}
-              <div style={{borderTop:'1px solid rgba(255,255,255,.06)',paddingTop:12,marginBottom:12}}>
-                {[{l:'País',v:`${pais.bandera} ${pais.nombre}`},{l:'Moneda',v:pais.moneda},{l:'Método',v:metodo?metodo.nombre:'—'},{l:'USD',v:`$${pkg.usd}`}].map((row,i)=>(
-                  <div key={i} style={{display:'flex',justifyContent:'space-between',marginBottom:7,fontSize:11}}>
-                    <span style={{color:'rgba(255,255,255,.35)'}}>{row.l}</span>
-                    <span style={{color:'#fff',fontFamily:"'Oswald',sans-serif"}}>{row.v}</span>
-                  </div>
-                ))}
-              </div>
-              {/* Total */}
-              <div style={{background:'#0a0d14',border:'1px solid rgba(141,198,63,.18)',borderRadius:4,padding:'12px 14px',textAlign:'center',marginBottom:14}}>
-                <div style={{fontSize:9,fontFamily:"'Oswald',sans-serif",letterSpacing:2,color:'rgba(255,255,255,.25)',marginBottom:5,textTransform:'uppercase'}}>Total</div>
-                <div style={{fontFamily:"'Oswald',sans-serif",fontSize:28,fontWeight:700,color:'#fff',lineHeight:1}}>{formatMonto()}</div>
-                <div style={{fontSize:10,color:'rgba(255,255,255,.3)',marginTop:3}}>{pais.moneda}</div>
-              </div>
-              {/* Barra de progreso pasos */}
-              <div style={{display:'flex',gap:4,marginBottom:14}}>
-                {[1,2,3].map(n=>(
-                  <div key={n} style={{flex:1,height:3,borderRadius:2,background:paso>=n?'#8dc63f':'rgba(255,255,255,.06)',transition:'background .3s'}}/>
-                ))}
-              </div>
-              {/* Seguridad */}
-              <div style={{display:'flex',flexDirection:'column',gap:6}}>
-                {[{icon:<Lock size={10}/>,label:'Transacción cifrada y segura'},{icon:<Shield size={10}/>,label:'Datos protegidos, nunca compartidos'},{icon:<Globe size={10}/>,label:'Soporte 24/7 por WhatsApp'}].map((item,i)=>(
-                  <div key={i} style={{display:'flex',alignItems:'center',gap:7,fontSize:10,color:'rgba(255,255,255,.22)'}}>
-                    <span style={{color:'#8dc63f'}}>{item.icon}</span>{item.label}
-                  </div>
-                ))}
+        {/* ── COL DERECHA: PUBLICIDAD + INFO ── */}
+        <div className="co-col-pub" style={{borderLeft:'1px solid rgba(255,255,255,.05)',background:'#0b0e1a',display:'flex',flexDirection:'column'}}>
+          <div style={{position:'sticky',top:52,padding:'20px 16px',display:'flex',flexDirection:'column',gap:14}}>
+
+            {/* Banner publicitario */}
+            <div style={{position:'relative',borderRadius:8,overflow:'hidden',height:280,cursor:'pointer',border:'1px solid rgba(141,198,63,.15)',transition:'border-color .2s'}}
+              onMouseEnter={e=>(e.currentTarget as HTMLDivElement).style.borderColor='rgba(141,198,63,.4)'}
+              onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.borderColor='rgba(141,198,63,.15)'}>
+              <img src="/img/kick10.jpg" alt="" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
+              <div style={{position:'absolute',inset:0,background:'linear-gradient(0deg,rgba(10,13,20,.95) 0%,rgba(10,13,20,.5) 50%,transparent 100%)'}}/>
+              <div style={{position:'absolute',top:10,right:10,background:'#8dc63f',padding:'3px 8px',borderRadius:2,fontFamily:"'Oswald',sans-serif",fontSize:8,fontWeight:700,color:'#0a0d14',letterSpacing:1}}>PATROCINADOR</div>
+              <div style={{position:'absolute',bottom:0,left:0,right:0,padding:'16px'}}>
+                <div style={{fontFamily:"'Oswald',sans-serif",fontSize:14,fontWeight:700,color:'#fff',textTransform:'uppercase',marginBottom:6,lineHeight:1.2}}>COPA KICKLAST 2026</div>
+                <div style={{fontSize:10,color:'rgba(255,255,255,.5)',marginBottom:10}}>El torneo más grande de predicciones</div>
+                <button style={{background:'rgba(141,198,63,.1)',border:'1px solid #8dc63f',color:'#8dc63f',padding:'7px 14px',borderRadius:3,fontFamily:"'Oswald',sans-serif",fontSize:9,letterSpacing:1.5,fontWeight:700,cursor:'pointer',width:'100%',transition:'all .2s'}}
+                  onMouseEnter={e=>{e.currentTarget.style.background='#8dc63f';e.currentTarget.style.color='#0a0d14';}}
+                  onMouseLeave={e=>{e.currentTarget.style.background='rgba(141,198,63,.1)';e.currentTarget.style.color='#8dc63f';}}>
+                  VER TORNEOS
+                </button>
               </div>
             </div>
+
+            {/* Tips pago */}
+            <div style={{background:'#111827',border:'1px solid rgba(255,255,255,.06)',borderRadius:6,padding:'14px'}}>
+              <div style={{fontFamily:"'Oswald',sans-serif",fontSize:8,color:'rgba(255,255,255,.3)',letterSpacing:2,textTransform:'uppercase',marginBottom:12,display:'flex',alignItems:'center',gap:6}}>
+                <span style={{width:3,height:8,background:'#8dc63f',borderRadius:1,display:'inline-block'}}/>
+                Tips de pago
+              </div>
+              {[
+                {icon:'📸', tip:'Guarda siempre el comprobante de tu transacción'},
+                {icon:'⏱️', tip:'Acreditación en máximo 2-4 horas hábiles'},
+                {icon:'🔢', tip:'Envía el monto exacto indicado, sin redondeos'},
+                {icon:'📋', tip:'Incluye tu código de jugador en el concepto'},
+              ].map((t,i)=>(
+                <div key={i} style={{display:'flex',gap:8,marginBottom:10,paddingBottom:10,borderBottom:i<3?'1px solid rgba(255,255,255,.04)':'none'}}>
+                  <span style={{fontSize:14,flexShrink:0}}>{t.icon}</span>
+                  <div style={{fontSize:10,color:'rgba(255,255,255,.4)',lineHeight:1.5}}>{t.tip}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Soporte */}
+            <div style={{background:'rgba(56,189,248,.05)',border:'1px solid rgba(56,189,248,.15)',borderRadius:6,padding:'12px 14px',display:'flex',gap:10,alignItems:'center',cursor:'pointer',transition:'border-color .2s'}}
+              onMouseEnter={e=>(e.currentTarget as HTMLDivElement).style.borderColor='rgba(56,189,248,.35)'}
+              onMouseLeave={e=>(e.currentTarget as HTMLDivElement).style.borderColor='rgba(56,189,248,.15)'}>
+              <div style={{width:32,height:32,borderRadius:6,background:'rgba(56,189,248,.1)',border:'1px solid rgba(56,189,248,.2)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,fontSize:16}}>💬</div>
+              <div>
+                <div style={{fontFamily:"'Oswald',sans-serif",fontSize:11,fontWeight:700,color:'#fff',marginBottom:2}}>¿TIENES DUDAS?</div>
+                <div style={{fontSize:10,color:'rgba(56,189,248,.7)'}}>Soporte 24/7 por WhatsApp</div>
+              </div>
+            </div>
+
           </div>
         </div>
 

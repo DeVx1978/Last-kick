@@ -129,6 +129,32 @@ function Splash({ torneo }: { torneo: string }) {
     </div>
   );
 }
+const HERO_SLIDES = [
+  {
+    badge: 'TORNEO OFICIAL',
+    badgeColor: '#00C853',
+    badgeBg: 'rgba(0,200,83,0.15)',
+    title: 'COPA KICKLAST 2026',
+    desc: 'Cada partido es una oportunidad. Acumula aciertos y domina la tabla.',
+    bg: "linear-gradient(90deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,.4) 100%), url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55')"
+  },
+  {
+    badge: 'MODO EXTREMO',
+    badgeColor: '#00C853',
+    badgeBg: 'rgba(0,200,83,0.15)',
+    title: 'JUEGA A PREDECIR',
+    desc: 'Juego de supervivencia. Un solo error y quedas eliminado.',
+    bg: "linear-gradient(90deg, rgba(0,0,0,.95) 0%, rgba(0,200,83,.2) 100%), url('https://images.unsplash.com/photo-1508344928928-720b70852d11')"
+  },
+  {
+    badge: 'ESPACIO PUBLICITARIO',
+    badgeColor: '#38bdf8',
+    badgeBg: 'rgba(56,189,248,0.15)',
+    title: 'TU MARCA AQUÍ',
+    desc: 'Llega a miles de jugadores diarios en el juegoS de predicciones más grande.',
+    bg: "linear-gradient(90deg, rgba(0,0,0,.9) 0%, rgba(0,0,0,.4) 100%), url('https://images.unsplash.com/photo-1518605368461-1ed12223f851')"
+  }
+];
 
 export default function CampoDeBatallaPage() {
   const params = useParams();
@@ -168,6 +194,27 @@ const [procesandoApuesta, setProcesandoApuesta] = useState(false);
   const [tiempoLeft,        setTiempoLeft]        = useState(540);
   const [cronActivo,        setCronActivo]        = useState(false);
   const cronRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  /* ── Motor Carrusel Hero ── */
+const carouselRef = useRef<HTMLDivElement>(null);
+const [slideIdx, setSlideIdx] = useState(0);
+const TOTAL_SLIDES = 3;
+
+useEffect(() => {
+  const autoPlay = setInterval(() => {
+    setSlideIdx(prev => (prev + 1) % TOTAL_SLIDES);
+  }, 4500);
+  return () => clearInterval(autoPlay);
+}, []);
+
+useEffect(() => {
+  if (carouselRef.current) {
+    const slideWidth = carouselRef.current.clientWidth;
+    carouselRef.current.scrollTo({
+      left: slideIdx * slideWidth,
+      behavior: 'smooth',
+    });
+  }
+}, [slideIdx]);
 
   /* ══════════════════════════════════════
      INIT — carga torneo + jugador + partidos
@@ -693,26 +740,21 @@ const siguienteJornada = todosFinalizados
     );
   }
 
-  /* ══ VISTA PRINCIPAL ══ */
+ /* ══ VISTA PRINCIPAL ══ */
   return (
     <div className={styles.root}>
-
       {/* ── TOPBAR ── */}
       <div className={styles.topbar}>
-        {/* Izquierda: Radar + Logo */}
         <div className={styles.topbarLeft}>
           <button className={styles.backBtn} onClick={() => router.push('/radar')}>
-  <ChevronLeft size={18}/>
-</button>
+            <ChevronLeft size={18}/>
+          </button>
           <div className={styles.topbarLogo}>
             {!logoErr
               ? <img src="/img/kicklast02.png" alt="Kick Last" onError={() => setLogoErr(true)}/>
               : <span className={styles.topbarLogoFb}>KICK LAST</span>}
           </div>
-          {/* Nombre del torneo — solo desktop */}
-          
         </div>
-        {/* Derecha: stats del jugador */}
         <div className={styles.topbarRight}>
           <div className={styles.topbarStat}>
             <Heart size={12} style={{ color:'#8dc63f' }}/>
@@ -734,285 +776,225 @@ const siguienteJornada = todosFinalizados
         </div>
       </div>
 
-      <div className={styles.body}>
+      {/* ── COLUMNA 1: NAVEGACIÓN IZQUIERDA ── */}
+      <aside className={styles.leftSidebar}>
+        <div className={styles.sideTitle}>NAVEGACIÓN</div>
+        <div className={styles.sideMenu}>
+          <button className={`${styles.sideBtn} ${styles.active}`}>⚽ Central de Partidos</button>
+          <button className={styles.sideBtn}>🏆 Clasificación Global</button>
+          <button className={styles.sideBtn}>🎯 Historial de Jugadas</button>
+          <button className={styles.sideBtn}>💰 Bolsa de Premios</button>
+        </div>
+      </aside>
 
-        {/* Tabs eliminados — solo se muestran partidos de hoy */}
+      {/* ── COLUMNA 2: MOTOR CENTRAL ── */}
+      <main className={styles.mainContent}>
 
-        {/* ── HEADER DEL DÍA ── */}
-        <div className={styles.dayHeader}>
-          <div>
-            <div className={styles.dayTorneo}><div className={styles.dayLiveDot}/>{torneoNombre}</div>
-            <div className={styles.dayFecha}>{formatFecha(fechaActiva)}</div>
-            <div className={styles.daySubtitle}>
-              {totalDelDia === 0 ? 'No hay partidos programados para hoy'
-                : `${totalDelDia} partido${totalDelDia > 1 ? 's' : ''} programado${totalDelDia > 1 ? 's' : ''} hoy`}
-            </div>
-          </div>
-          <div>
-            <div className={styles.dayProgNum}>{predichos} / {totalDelDia} predicciones</div>
-            <div className={styles.dayProgLabel}>Progreso del día</div>
-            <div className={styles.dayProgBar}>
-              <div className={styles.dayProgFill}
-                style={{ width: totalDelDia > 0 ? `${(predichos/totalDelDia)*100}%` : '0%' }}/>
+          {/* ── CARRUSEL HERO ── */}
+      <div className={styles.carouselWrapper} ref={carouselRef}>
+
+        {/* Slide 1 */}
+        <div className={styles.carouselSlide} style={{ background: 'linear-gradient(90deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.3) 100%), url(/img/kick50.jpg) center/cover no-repeat' }}>
+          <div className={styles.heroOverlay}>
+            <div className={styles.heroBadge} style={{ color: '#00C853', background: 'rgba(0,200,83,0.12)', border: '1px solid rgba(0,200,83,0.3)' }}>⚽ TORNEO OFICIAL</div>
+            <h2 className={styles.heroTitle}>COPA KICKLAST 2026</h2>
+            <p className={styles.heroDescription}>Cada partido es una oportunidad. Acumula aciertos y domina la tabla.</p>
+            <div style={{ marginTop: 16, display: 'flex', gap: 10 }}>
+              <div style={{ padding: '6px 14px', borderRadius: 6, background: 'rgba(0,200,83,0.1)', border: '1px solid rgba(0,200,83,0.2)', fontSize: 11, color: '#00C853', fontFamily: "'Oswald',sans-serif", fontWeight: 700 }}>🏆 {partidos.length} PARTIDOS</div>
+              <div style={{ padding: '6px 14px', borderRadius: 6, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', fontSize: 11, color: 'rgba(255,255,255,0.4)', fontFamily: "'Oswald',sans-serif", fontWeight: 600 }}>MUNDIAL FIFA 2026</div>
             </div>
           </div>
         </div>
 
-        {/* ── LISTA DE PARTIDOS ── */}
-        {todosFinalizados && siguienteJornada ? (
-          <div className={styles.emptyState}>
-            <Calendar size={40} style={{ margin:'0 auto', opacity:0.6, display:'block', color:'#8dc63f' }}/>
-            <div className={styles.emptyTitle}>¡Jornada completada!</div>
-            <div className={styles.emptyDesc}>Todos los partidos de esta jornada han finalizado.</div>
-            <button onClick={() => setFechaSel(siguienteJornada)} style={{
-              marginTop:16, padding:'10px 24px',
-              background:'#8dc63f', border:'none', borderRadius:8,
-              fontFamily:"'Oswald',sans-serif", fontSize:13, fontWeight:700,
-              color:'#0a0d14', cursor:'pointer'
-            }}>
-              Ver siguiente jornada →
-            </button>
+        {/* Slide 2 */}
+        <div className={styles.carouselSlide} style={{ background: 'linear-gradient(90deg, rgba(0,0,0,.88) 0%, rgba(0,20,8,.75) 100%), url(/img/kick51.jpg) center/cover no-repeat' }}>
+          <div className={styles.heroOverlay}>
+            <div className={styles.heroBadge} style={{ color: '#ff4444', background: 'rgba(255,68,68,0.1)', border: '1px solid rgba(255,68,68,0.3)' }}>⚠ MODO EXTREMO</div>
+            <h2 className={styles.heroTitle}>JUEGA A PREDECIR</h2>
+            <p className={styles.heroDescription}>Juego de supervivencia. Un solo error y quedas eliminado.</p>
+            <div style={{ marginTop: 16, display: 'flex', gap: 10 }}>
+              <div style={{ padding: '6px 14px', borderRadius: 6, background: 'rgba(255,68,68,0.1)', border: '1px solid rgba(255,68,68,0.2)', fontSize: 11, color: '#ff6666', fontFamily: "'Oswald',sans-serif", fontWeight: 700 }}>❤ {jugador.vidas} VIDAS RESTANTES</div>
+            </div>
           </div>
-        ) : partidosDelDia.length === 0 ? (
-          <div className={styles.emptyState}>
-            <Calendar size={40} style={{ margin:'0 auto', opacity:0.3, display:'block' }}/>
-            <div className={styles.emptyTitle}>No hay partidos hoy</div>
-            <div className={styles.emptyDesc}>Vuelve mañana para predecir los partidos del día.</div>
+        </div>
+
+        {/* Slide 3 */}
+        <div className={styles.carouselSlide} style={{ background: 'linear-gradient(90deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.5) 100%), url(/img/kick3.jpg) center/cover no-repeat' }}>
+          <div className={styles.heroOverlay}>
+            <div className={styles.heroBadge} style={{ color: '#38bdf8', background: 'rgba(56,189,248,0.1)', border: '1px solid rgba(56,189,248,0.25)' }}>📢 ESPACIO PUBLICITARIO</div>
+            <h2 className={styles.heroTitle}>CADA VIDA CUENTA</h2>
+            <p className={styles.heroDescription}>Llega a miles de jugadores diarios en la plataforma de predicciones más grande.</p>
+            <div style={{ marginTop: 16, display: 'flex', gap: 10 }}>
+              <div style={{ padding: '6px 14px', borderRadius: 6, background: 'rgba(56,189,248,0.1)', border: '1px solid rgba(56,189,248,0.2)', fontSize: 11, color: '#38bdf8', fontFamily: "'Oswald',sans-serif", fontWeight: 700 }}>📧 CONTACTAR</div>
+            </div>
           </div>
-        ) : (
-          <div className={styles.partidosList}>
-            {partidosDelDia.map((partido, idx) => {
-              const badge    = getEstadoBadge(partido);
-              const { puede, razon } = puedePredecirsе(partido);
+        </div>
 
-              return (
-                <motion.div key={partido.id}
-                  className={`${styles.partidoCard}
-                    ${partido.predicho ? styles.predicho : ''}
-                    ${partido.estado === 'EN_VIVO' ? styles.enVivo : ''}
-                    ${!puede && !partido.predicho ? styles.bloqueado : ''}`}
-                  initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }}
-                  transition={{ duration:0.3, delay:idx * 0.05 }}>
+      </div>
 
-                  {/* Header */}
-                  <div className={styles.partidoHeader}>
-                    <div className={styles.partidoHora}>
-                      <Clock size={13} style={{ color:'#8dc63f' }}/>
-                      {formatHora(partido.hora_inicio)}
+      {/* Dots */}
+      <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: -12, marginBottom: 24, position: 'relative', zIndex: 2 }}>
+        {[0, 1, 2].map(i => (
+          <button key={i} onClick={() => setSlideIdx(i)} style={{ width: slideIdx === i ? 24 : 8, height: 8, borderRadius: 4, border: 'none', cursor: 'pointer', background: slideIdx === i ? '#00C853' : 'rgba(255,255,255,0.15)', transition: 'all 0.3s', padding: 0 }} />
+        ))}
+      </div>
+
+<div className={styles.body}>
+          {/* ── HEADER DEL DÍA ── */}
+          <div className={styles.dayHeader}>
+            <div>
+              <div className={styles.dayTorneo}><div className={styles.dayLiveDot}/>{torneoNombre}</div>
+              <div className={styles.dayFecha}>{formatFecha(fechaActiva)}</div>
+              <div className={styles.daySubtitle}>
+                {totalDelDia === 0 ? 'No hay partidos programados para hoy' : `${totalDelDia} partido${totalDelDia > 1 ? 's' : ''} programado${totalDelDia > 1 ? 's' : ''} hoy`}
+              </div>
+            </div>
+            <div>
+              <div className={styles.dayProgNum}>{predichos} / {totalDelDia} predicciones</div>
+              <div className={styles.dayProgLabel}>Progreso del día</div>
+              <div className={styles.dayProgBar}>
+                <div className={styles.dayProgFill} style={{ width: totalDelDia > 0 ? `${(predichos/totalDelDia)*100}%` : '0%' }}/>
+              </div>
+            </div>
+          </div>
+
+          {/* ── LISTA DE PARTIDOS ── */}
+          {todosFinalizados && siguienteJornada ? (
+            <div className={styles.emptyState}>
+              <Calendar size={40} style={{ margin:'0 auto', opacity:0.6, display:'block', color:'#8dc63f' }}/>
+              <div className={styles.emptyTitle}>¡Jornada completada!</div>
+              <div className={styles.emptyDesc}>Todos los partidos de esta jornada han finalizado.</div>
+              <button onClick={() => setFechaSel(siguienteJornada)} style={{ marginTop:16, padding:'10px 24px', background:'#8dc63f', border:'none', borderRadius:8, fontFamily:"'Oswald',sans-serif", fontSize:13, fontWeight:700, color:'#0a0d14', cursor:'pointer' }}>
+                Ver siguiente jornada →
+              </button>
+            </div>
+          ) : partidosDelDia.length === 0 ? (
+            <div className={styles.emptyState}>
+              <Calendar size={40} style={{ margin:'0 auto', opacity:0.3, display:'block' }}/>
+              <div className={styles.emptyTitle}>No hay partidos hoy</div>
+              <div className={styles.emptyDesc}>Vuelve mañana para predecir los partidos del día.</div>
+            </div>
+          ) : (
+            <div className={styles.partidosList}>
+              {partidosDelDia.map((partido, idx) => {
+                const badge = getEstadoBadge(partido);
+                const { puede, razon } = puedePredecirsе(partido);
+
+                return (
+                  <motion.div key={partido.id}
+                    className={`${styles.partidoCard} ${partido.predicho ? styles.predicho : ''} ${partido.estado === 'EN_VIVO' ? styles.enVivo : ''} ${!puede && !partido.predicho ? styles.bloqueado : ''}`}
+                    initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ duration:0.3, delay:idx * 0.05 }}>
+
+                    <div className={styles.partidoHeader}>
+                      <div className={styles.partidoHora}><Clock size={13} style={{ color:'#8dc63f' }}/>{formatHora(partido.hora_inicio)}</div>
+                      <div className={styles.partidoMeta}>
+                        <span className={styles.partidoMetaItem}><MapPin size={11}/>{partido.ciudad}</span>
+                        <span style={{ color:'rgba(255,255,255,0.12)' }}>·</span>
+                        <span style={{ fontSize:10, color:'rgba(255,255,255,0.25)' }}>{partido.estadio}</span>
+                      </div>
+                      <span className={`${styles.partidoEstado} ${badge.clase}`}>{badge.texto}</span>
                     </div>
-                    <div className={styles.partidoMeta}>
-                      <span className={styles.partidoMetaItem}><MapPin size={11}/>{partido.ciudad}</span>
-                      <span style={{ color:'rgba(255,255,255,0.12)' }}>·</span>
-                      <span style={{ fontSize:10, color:'rgba(255,255,255,0.25)' }}>{partido.estadio}</span>
-                    </div>
-                    <span className={`${styles.partidoEstado} ${badge.clase}`}>{badge.texto}</span>
-                  </div>
 
-                  {/* Equipos */}
-                  <div className={styles.partidoEquipos}>
-                    <div className={styles.equipoLocal}>
-                      <div className={styles.equipoFlag}>
-                        <img src={`https://flagcdn.com/w80/${partido.flag_local}.png`}
-                          className={styles.flagImg} alt={partido.equipo_local}
-                          onError={e => (e.currentTarget.style.display = 'none')}/>
+                    <div className={styles.partidoEquipos}>
+                      <div className={styles.equipoLocal}>
+                        <img src={`https://flagcdn.com/w160/${partido.flag_local}.png`} className={styles.flagImg} alt={partido.equipo_local} onError={e => (e.currentTarget.style.display = 'none')} />
                         <span className={styles.equipoNombre}>{partido.equipo_local}</span>
+                        <span className={styles.equipoSub}>LOCAL</span>
                       </div>
-                      <span className={styles.equipoSub}>Local</span>
-                    </div>
-                    <div className={styles.vsBox}>
-                      {partido.estado === 'FINALIZADO' && partido.resultado_local !== undefined
-                        ? <div className={styles.vsScore}>{partido.resultado_local} — {partido.resultado_visitante}</div>
-                        : <div className={styles.vsText}>VS</div>}
-                    </div>
-                    <div className={styles.equipoVisita}>
-                      <div className={styles.equipoFlag}>
-                        <img src={`https://flagcdn.com/w80/${partido.flag_visitante}.png`}
-                          className={styles.flagImg} alt={partido.equipo_visitante}
-                          onError={e => (e.currentTarget.style.display = 'none')}/>
-                        <span className={styles.equipoNombre}>{partido.equipo_visitante}</span>
-                      </div>
-                      <span className={styles.equipoSub}>Visitante</span>
-                    </div>
-                  </div>
 
-                  {/* Cuotas */}
-                  {(partido.cuota_1 || partido.cuota_x || partido.cuota_2) && (
-                    <div className={styles.cuotasRow}>
-                      {[
-                        { lbl: partido.equipo_local.split(' ')[0],     val: partido.cuota_1, op: '1' as const },
-                        { lbl: 'Empate',                                val: partido.cuota_x, op: 'X' as const },
-                        { lbl: partido.equipo_visitante.split(' ')[0], val: partido.cuota_2, op: '2' as const },
-                      ].map(c => (
-                        <div key={c.op}
-                          className={styles.cuotaBtn}
-                          onClick={() => {
-                            if (partido.apuestas_activas && partido.estado !== 'FINALIZADO') {
-                              setApuestaPartido(apuestaPartido === `${partido.id}-${c.op}` ? null : `${partido.id}-${c.op}`);
-                            }
-                          }}
-                          style={{
-                            cursor: partido.apuestas_activas ? 'pointer' : 'default',
-                            border: apuestaPartido === `${partido.id}-${c.op}` ? '1px solid #8dc63f' : '1px solid rgba(255,255,255,.07)',
-                            background: apuestaPartido === `${partido.id}-${c.op}` ? 'rgba(141,198,63,.1)' : 'rgba(255,255,255,.03)',
-                            transition: 'all .15s',
-                          }}>
-                          <span className={styles.cuotaLbl}>{c.lbl}</span>
-                          <span className={styles.cuotaVal} style={{ color: partido.apuestas_activas ? '#8dc63f' : '#fff' }}>{c.val||'—'}</span>
-                          {partido.apuestas_activas && <span style={{ fontSize:8, color:'rgba(141,198,63,.5)', letterSpacing:1 }}>TAP</span>}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Panel de apuesta */}
-                  {partido.apuestas_activas && apuestaPartido?.startsWith(partido.id) && (
-                    <div style={{
-                      margin:'0 18px 14px',
-                      background:'#111827',
-                      border:'1px solid rgba(255,255,255,.08)',
-                      borderRadius:8, overflow:'hidden'
-                    }}>
-                      <div style={{
-                        padding:'8px 14px',
-                        background:'rgba(255,255,255,.03)',
-                        borderBottom:'1px solid rgba(255,255,255,.06)',
-                        display:'flex', alignItems:'center', justifyContent:'space-between'
-                      }}>
-                        <span style={{fontFamily:"'Oswald',sans-serif",fontSize:11,fontWeight:700,color:'rgba(255,255,255,.5)',letterSpacing:1}}>
-                          APUESTA — {apuestaPartido.split('-').pop() === '1' ? partido.equipo_local.toUpperCase() : apuestaPartido.split('-').pop() === '2' ? partido.equipo_visitante.toUpperCase() : 'EMPATE'}
-                        </span>
-                        <span style={{fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#8dc63f'}}>
-                          {apuestaPartido.split('-').pop() === '1' ? partido.cuota_1 : apuestaPartido.split('-').pop() === 'X' ? partido.cuota_x : partido.cuota_2}x
-                        </span>
-                      </div>
-                      <div style={{padding:'12px 14px'}}>
-                        <div style={{display:'flex',gap:6,marginBottom:10}}>
-                          {[10,50,100,500].map(m => (
-                            <button key={m} onClick={() => setMontoApuesta(String(m))} style={{
-                              flex:1, padding:'6px 0',
-                              border:`1px solid ${montoApuesta===String(m)?'rgba(255,255,255,.25)':'rgba(255,255,255,.06)'}`,
-                              borderRadius:5,
-                              background: montoApuesta===String(m)?'rgba(255,255,255,.08)':'rgba(255,255,255,.02)',
-                              color: montoApuesta===String(m)?'#fff':'rgba(255,255,255,.3)',
-                              fontFamily:"'Oswald',sans-serif", fontSize:11, fontWeight:700, cursor:'pointer'
-                            }}>{m}</button>
-                          ))}
-                        </div>
-                        <div style={{display:'flex',gap:8,marginBottom:10}}>
-                          <input
-                            type="number" min={1} value={montoApuesta}
-                            onChange={e => setMontoApuesta(e.target.value)}
-                            placeholder="PX a apostar"
-                            style={{
-                              flex:1, background:'rgba(255,255,255,.04)',
-                              border:'1px solid rgba(255,255,255,.08)',
-                              borderRadius:6, padding:'9px 12px',
-                              color:'#fff', fontSize:13, outline:'none',
-                              fontFamily:"'Roboto',sans-serif"
-                            }}
-                          />
-                          <button
-                            onClick={() => hacerApuesta(partido, apuestaPartido.split('-').pop() as '1'|'X'|'2')}
-                            disabled={!montoApuesta || procesandoApuesta}
-                            style={{
-                              padding:'9px 20px',
-                              background: montoApuesta ? '#8dc63f' : 'rgba(255,255,255,.04)',
-                              border:'none', borderRadius:6,
-                              fontFamily:"'Oswald',sans-serif", fontSize:12, fontWeight:700,
-                              color: montoApuesta ? '#0a0d14' : 'rgba(255,255,255,.2)',
-                              cursor: montoApuesta ? 'pointer' : 'not-allowed',
-                              transition:'all .15s'
-                            }}>
-                            {procesandoApuesta ? '...' : 'APOSTAR'}
-                          </button>
-                        </div>
-                        {montoApuesta && parseInt(montoApuesta) > 0 && (
-                          <div style={{
-                            display:'flex', justifyContent:'space-between',
-                            padding:'8px 10px',
-                            background:'rgba(255,255,255,.02)',
-                            border:'1px solid rgba(255,255,255,.05)',
-                            borderRadius:6, fontSize:11
-                          }}>
-                            <span style={{color:'rgba(255,255,255,.3)'}}>Ganancia potencial</span>
-                            <span style={{fontFamily:"'Oswald',sans-serif",fontWeight:700,color:'#fff'}}>
-                              {Math.floor(parseInt(montoApuesta) * Number(
-                                apuestaPartido.split('-').pop() === '1' ? (partido.cuota_1 || 1) :
-                                apuestaPartido.split('-').pop() === 'X' ? (partido.cuota_x || 1) :
-                                (partido.cuota_2 || 1)
-                              ))} PX
-                            </span>
-                          </div>
+                      <div className={styles.vsBox}>
+                        {partido.estado === 'FINALIZADO' && partido.resultado_local !== undefined ? (
+                          <div className={styles.vsScore}>{partido.resultado_local}<span> - </span>{partido.resultado_visitante}</div>
+                        ) : (
+                          <div className={styles.vsText}>VS</div>
                         )}
                       </div>
-                    </div>
-                  )}
-                  {/* Resumen predicciones ya hechas */}
-                  {partido.predicho && partido.predicciones_jugador && (
-                    <div style={{ padding:'0 18px 12px' }}>
-                      {partido.predicciones_jugador.map((r, i) => (
-                        <div key={i} className={styles.resumenItem}>
-                          <span className={styles.resumenPregunta}>{r.pregunta}</span>
-                          <span className={styles.resumenRespuesta}>{r.respuesta}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
 
-                  {/* Botón de acción */}
-                  <div className={styles.partidoFooter}>
-                    {partido.predicho ? (
-                      <div className={`${styles.btnPredicho}`} style={{
-                        background: partido.es_correcta === true ? 'rgba(141,198,63,.12)' :
-                                    partido.es_correcta === false ? 'rgba(239,68,68,.12)' :
-                                    'rgba(141,198,63,.08)',
-                        borderColor: partido.es_correcta === true ? 'rgba(141,198,63,.3)' :
-                                     partido.es_correcta === false ? 'rgba(239,68,68,.3)' :
-                                     'rgba(141,198,63,.2)',
-                        color: partido.es_correcta === true ? '#8dc63f' :
-                               partido.es_correcta === false ? '#ef4444' :
-                               '#8dc63f'
-                      }}>
-                        {partido.es_correcta === true ? <><CheckCircle size={15}/> ¡Predicción correcta!</> :
-                         partido.es_correcta === false ? <><X size={15}/> Predicción incorrecta</> :
-                         <><CheckCircle size={15}/> Predicción enviada</>}
+                      <div className={styles.equipoVisita}>
+                        <img src={`https://flagcdn.com/w160/${partido.flag_visitante}.png`} className={styles.flagImg} alt={partido.equipo_visitante} onError={e => (e.currentTarget.style.display = 'none')} />
+                        <span className={styles.equipoNombre}>{partido.equipo_visitante}</span>
+                        <span className={styles.equipoSub}>VISITANTE</span>
                       </div>
-                    ) : partido.estado === 'EN_VIVO' ? (
-                      <div className={styles.btnEnVivo}>● Partido en vivo — predicción cerrada</div>
-                    ) : partido.estado === 'FINALIZADO' ? (
-                      <div className={styles.btnPredicho}>Partido finalizado</div>
-                    ) : !puede && razon === 'muy_pronto' ? (
-                      <div className={styles.btnBloqueado}>
-                        <Lock size={13}/> Disponible 24h antes del partido
+                    </div>
+
+                    {partido.apuestas_activas && apuestaPartido?.startsWith(partido.id) && (
+                      <div style={{ margin:'0 18px 14px', background:'#111827', border:'1px solid rgba(255,255,255,.08)', borderRadius:8, overflow:'hidden', position: 'relative', zIndex: 2 }}>
+                        <div style={{ padding:'8px 14px', background:'rgba(255,255,255,.03)', borderBottom:'1px solid rgba(255,255,255,.06)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+                          <span style={{fontFamily:"'Oswald',sans-serif",fontSize:11,fontWeight:700,color:'rgba(255,255,255,.5)',letterSpacing:1}}>
+                            APUESTA — {apuestaPartido.split('-').pop() === '1' ? partido.equipo_local.toUpperCase() : apuestaPartido.split('-').pop() === '2' ? partido.equipo_visitante.toUpperCase() : 'EMPATE'}
+                          </span>
+                          <span style={{fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#8dc63f'}}>
+                            {apuestaPartido.split('-').pop() === '1' ? partido.cuota_1 : apuestaPartido.split('-').pop() === 'X' ? partido.cuota_x : partido.cuota_2}x
+                          </span>
+                        </div>
+                        <div style={{padding:'12px 14px'}}>
+                          <div style={{display:'flex',gap:6,marginBottom:10}}>
+                            {[10,50,100,500].map(m => (
+                              <button key={m} onClick={() => setMontoApuesta(String(m))} style={{ flex:1, padding:'6px 0', border:`1px solid ${montoApuesta===String(m)?'rgba(255,255,255,.25)':'rgba(255,255,255,.06)'}`, borderRadius:5, background: montoApuesta===String(m)?'rgba(255,255,255,.08)':'rgba(255,255,255,.02)', color: montoApuesta===String(m)?'#fff':'rgba(255,255,255,.3)', fontFamily:"'Oswald',sans-serif", fontSize:11, fontWeight:700, cursor:'pointer' }}>{m}</button>
+                            ))}
+                          </div>
+                          <div style={{display:'flex',gap:8,marginBottom:10}}>
+                            <input type="number" min={1} value={montoApuesta} onChange={e => setMontoApuesta(e.target.value)} placeholder="PX a apostar" style={{ flex:1, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', borderRadius:6, padding:'9px 12px', color:'#fff', fontSize:13, outline:'none', fontFamily:"'Roboto',sans-serif" }} />
+                            <button onClick={() => hacerApuesta(partido, apuestaPartido.split('-').pop() as '1'|'X'|'2')} disabled={!montoApuesta || procesandoApuesta} style={{ padding:'9px 20px', background: montoApuesta ? '#8dc63f' : 'rgba(255,255,255,.04)', border:'none', borderRadius:6, fontFamily:"'Oswald',sans-serif", fontSize:12, fontWeight:700, color: montoApuesta ? '#0a0d14' : 'rgba(255,255,255,.2)', cursor: montoApuesta ? 'pointer' : 'not-allowed', transition:'all .15s' }}>
+                              {procesandoApuesta ? '...' : 'APOSTAR'}
+                            </button>
+                          </div>
+                          {montoApuesta && parseInt(montoApuesta) > 0 && (
+                            <div style={{ display:'flex', justifyContent:'space-between', padding:'8px 10px', background:'rgba(255,255,255,.02)', border:'1px solid rgba(255,255,255,.05)', borderRadius:6, fontSize:11 }}>
+                              <span style={{color:'rgba(255,255,255,.3)'}}>Ganancia potencial</span>
+                              <span style={{fontFamily:"'Oswald',sans-serif",fontWeight:700,color:'#fff'}}>
+                                {Math.floor(parseInt(montoApuesta) * Number( apuestaPartido.split('-').pop() === '1' ? (partido.cuota_1 || 1) : apuestaPartido.split('-').pop() === 'X' ? (partido.cuota_x || 1) : (partido.cuota_2 || 1) ))} PX
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    ) : !puede && razon === 'cerrado' ? (
-                      <div className={styles.btnEnVivo}>Predicción cerrada</div>
-                    ) : estaInscrito ? (
-                      <button className={styles.btnPredecir} onClick={() => abrirPrediccion(partido)}>
-                        <ChevronRight size={16}/> Predecir este partido
-                      </button>
-                    ) : (
-                      <button className={styles.btnBloqueado} onClick={() => router.push('/torneos')}>
-                        <Lock size={13}/> Inscríbete para predecir
-                      </button>
                     )}
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        )}
-        {partidosFinalizados.length > 0 && (
+
+                    {partido.predicho && partido.predicciones_jugador && (
+                      <div style={{ padding:'0 18px 12px', position: 'relative', zIndex: 1 }}>
+                        {partido.predicciones_jugador.map((r, i) => (
+                          <div key={i} className={styles.resumenItem}>
+                            <span className={styles.resumenPregunta}>{r.pregunta}</span>
+                            <span className={styles.resumenRespuesta}>{r.respuesta}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className={styles.partidoFooter}>
+                      {partido.predicho ? (
+                        <div className={`${styles.btnPredicho}`} style={{ background: partido.es_correcta === true ? 'rgba(141,198,63,.12)' : partido.es_correcta === false ? 'rgba(239,68,68,.12)' : 'rgba(141,198,63,.08)', borderColor: partido.es_correcta === true ? 'rgba(141,198,63,.3)' : partido.es_correcta === false ? 'rgba(239,68,68,.3)' : 'rgba(141,198,63,.2)', color: partido.es_correcta === true ? '#8dc63f' : partido.es_correcta === false ? '#ef4444' : '#8dc63f' }}>
+                          {partido.es_correcta === true ? <><CheckCircle size={15}/> ¡Predicción correcta!</> : partido.es_correcta === false ? <><X size={15}/> Predicción incorrecta</> : <><CheckCircle size={15}/> Predicción enviada</>}
+                        </div>
+                      ) : partido.estado === 'EN_VIVO' ? (
+                        <div className={styles.btnEnVivo}>● Partido en vivo — predicción cerrada</div>
+                      ) : partido.estado === 'FINALIZADO' ? (
+                        <div className={styles.btnPredicho}>Partido finalizado</div>
+                      ) : !puede && razon === 'muy_pronto' ? (
+                        <div className={styles.btnBloqueado}><Lock size={13}/> Disponible 24h antes del partido</div>
+                      ) : !puede && razon === 'cerrado' ? (
+                        <div className={styles.btnEnVivo}>Predicción cerrada</div>
+                      ) : estaInscrito ? (
+                        <button className={styles.btnPredecir} onClick={() => abrirPrediccion(partido)}><ChevronRight size={16}/> Predecir este partido</button>
+                      ) : (
+                        <button className={styles.btnBloqueado} onClick={() => router.push('/torneos')}><Lock size={13}/> Inscríbete para predecir</button>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* PARTIDOS FINALIZADOS */}
+          {partidosFinalizados.length > 0 && (
             <div style={{marginTop:24}}>
               <div style={{fontFamily:"'Oswald',sans-serif",fontSize:11,fontWeight:600,color:"rgba(255,255,255,.3)",letterSpacing:2,textTransform:"uppercase",marginBottom:12,display:"flex",alignItems:"center",gap:8}}>
-                <div style={{width:3,height:13,background:"rgba(56,189,248,.5)",borderRadius:2}}/>
-                PARTIDOS FINALIZADOS
+                <div style={{width:3,height:13,background:"rgba(56,189,248,.5)",borderRadius:2}}/> PARTIDOS FINALIZADOS
               </div>
               {partidosFinalizados.map((partido, idx) => (
-                <motion.div key={partido.id}
-                  initial={{opacity:0,y:8}} animate={{opacity:1,y:0}}
-                  transition={{duration:0.2,delay:idx*0.04}}
-                  style={{background:'#111827',border:`1px solid ${resultados[partido.id]===true?'rgba(141,198,63,.25)':resultados[partido.id]===false?'rgba(239,68,68,.2)':'rgba(255,255,255,.06)'}`,borderRadius:10,marginBottom:8,padding:'10px 14px',display:'flex',alignItems:'center',gap:8,flexWrap:'wrap' as const,opacity:0.8}}>
+                <motion.div key={partido.id} initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} transition={{duration:0.2,delay:idx*0.04}} style={{background:'#111827',border:`1px solid ${resultados[partido.id]===true?'rgba(141,198,63,.25)':resultados[partido.id]===false?'rgba(239,68,68,.2)':'rgba(255,255,255,.06)'}`,borderRadius:10,marginBottom:8,padding:'10px 14px',display:'flex',alignItems:'center',gap:8,flexWrap:'wrap' as const,opacity:0.8}}>
                   <span style={{fontFamily:"'Oswald',sans-serif",fontSize:9,fontWeight:700,padding:'2px 6px',borderRadius:3,background:'rgba(56,189,248,.12)',color:'#38bdf8'}}>FINALIZADO</span>
                   <span style={{fontFamily:"'Oswald',sans-serif",fontSize:13,fontWeight:700,color:'#fff',flex:1}}>{partido.equipo_local} vs {partido.equipo_visitante}</span>
                   {partido.resultado_local !== undefined && <span style={{fontFamily:"'Oswald',sans-serif",fontSize:14,fontWeight:700,color:'#fff'}}>{partido.resultado_local} — {partido.resultado_visitante}</span>}
@@ -1023,39 +1005,100 @@ const siguienteJornada = todosFinalizados
               ))}
             </div>
           )}
-      </div>
+        </div>
+      </main>
+
+      {/* ── COLUMNA 3: TICKET DE APUESTAS Y RECOMENDADOS ── */}
+      <aside className={styles.rightSidebar}>
+        
+        {/* TICKET DE APUESTAS */}
+        <div className={styles.ticketWrapper}>
+          <div className={styles.ticketHeader}>
+            <span>Ticket de Apuestas</span>
+            <span style={{color: 'rgba(255,255,255,0.3)', fontSize: 11}}>0</span>
+          </div>
+          <div className={styles.ticketTabs}>
+            <div className={`${styles.ticketTab} ${styles.active}`}>Sencilla</div>
+            <div className={styles.ticketTab}>Múltiple</div>
+            <div className={styles.ticketTab}>Sistema</div>
+          </div>
+          <div className={styles.ticketBody}>
+            <div className={styles.ticketEmpty}>
+              No has seleccionado ninguna cuota.<br/>
+              Haz clic en las cuotas de los partidos para añadirlas a tu ticket.
+            </div>
+          </div>
+        </div>
+
+       {/* RECOMENDADOS */}
+<div className={styles.recTitle}>Recomendados</div>
+<div className={styles.recGrid}>
+  <div className={styles.recCard}>
+    <img src="/img/kick1.jpg" alt="Rec 1" />
+  </div>
+  <div className={styles.recCard}>
+    <img src="/img/kick50.jpg" alt="Rec 2" />
+  </div>
+  <div className={styles.recCard}>
+    <img src="/img/kick1.jpg" alt="Rec 3" />
+  </div>
+  <div className={styles.recCard}>
+    <img src="/img/kick1.jpg" alt="Rec 4" />
+  </div>
+</div>
+
+{/* IMAGEN GRANDE INFERIOR */}
+<div style={{
+  marginTop: 12,
+  borderRadius: 10,
+  overflow: 'hidden',
+  border: '1px solid rgba(141,198,63,0.15)',
+  cursor: 'pointer',
+  position: 'relative',
+  flex: 1,
+  minHeight: 120,
+}}>
+  <img src="/img/kick1.jpg" alt="Promo" style={{
+    width: '100%', height: '100%', objectFit: 'cover', display: 'block',
+    opacity: 0.75, transition: '0.3s',
+  }} />
+  <div style={{
+    position: 'absolute', inset: 0,
+    background: 'linear-gradient(0deg, rgba(0,0,0,.75) 0%, transparent 60%)',
+  }} />
+  <div style={{
+    position: 'absolute', bottom: 12, left: 14, right: 14,
+  }}>
+    <div style={{ fontFamily: "'Oswald',sans-serif", fontSize: 13, fontWeight: 700, color: '#fff' }}>
+      MUNDIAL FIFA 2026
+    </div>
+    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', marginTop: 2 }}>
+      64 partidos · 32 equipos
+    </div>
+  </div>
+</div>
+      </aside>
 
       {/* ══ MODAL DE PREDICCIÓN ══ */}
       <AnimatePresence>
         {fase === 'prediciendo' && partidoActivo && (
-          <motion.div className={styles.modalOverlay}
-            initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}>
-            <motion.div className={styles.modal}
-              initial={{ opacity:0, y:60 }} animate={{ opacity:1, y:0 }}
-              exit={{ opacity:0, y:40 }} transition={{ type:'spring', stiffness:300, damping:28 }}>
-
+          <motion.div className={styles.modalOverlay} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}>
+            <motion.div className={styles.modal} initial={{ opacity:0, y:60 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:40 }} transition={{ type:'spring', stiffness:300, damping:28 }}>
               <div className={styles.modalHeader}>
                 <div className={styles.modalPartido}>
-                  <div className={styles.modalEquipos}>
-                    {partidoActivo.equipo_local}<span>VS</span>{partidoActivo.equipo_visitante}
-                  </div>
+                  <div className={styles.modalEquipos}>{partidoActivo.equipo_local}<span>VS</span>{partidoActivo.equipo_visitante}</div>
                   <button className={styles.modalClose} onClick={() => setFase('lista')}>✕</button>
                 </div>
                 <div className={styles.modalMeta}>
-                  <span className={styles.modalMetaItem}><Clock size={11}/>{formatHora(partidoActivo.hora_inicio)}</span>
-                  <span>·</span>
-                  <span className={styles.modalMetaItem}><MapPin size={11}/>{partidoActivo.estadio}</span>
-                  <span>·</span>
-                  <span>{partidoActivo.ciudad}</span>
+                  <span className={styles.modalMetaItem}><Clock size={11}/>{formatHora(partidoActivo.hora_inicio)}</span><span>·</span>
+                  <span className={styles.modalMetaItem}><MapPin size={11}/>{partidoActivo.estadio}</span><span>·</span><span>{partidoActivo.ciudad}</span>
                 </div>
               </div>
 
               {cargandoPreguntas ? (
                 <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:14, padding:40 }}>
                   <Activity size={30} style={{ color:'#8dc63f', animation:'spin 0.8s linear infinite' }}/>
-                  <span style={{ fontSize:11, color:'rgba(255,255,255,0.4)', fontFamily:"'Oswald',sans-serif", letterSpacing:2 }}>
-                    CARGANDO PREGUNTAS...
-                  </span>
+                  <span style={{ fontSize:11, color:'rgba(255,255,255,0.4)', fontFamily:"'Oswald',sans-serif", letterSpacing:2 }}>CARGANDO PREGUNTAS...</span>
                 </div>
               ) : preguntasActivas.length > 0 ? (
                 <>
@@ -1063,9 +1106,7 @@ const siguienteJornada = todosFinalizados
                     <span className={styles.modalProgresoLbl}>Pregunta</span>
                     <div className={styles.modalProgresoBar}>
                       {preguntasActivas.map((_, i) => (
-                        <div key={i} className={`${styles.modalProgresoSeg} ${
-                          i < preguntaIdx ? styles.segHecho :
-                          i === preguntaIdx ? styles.segActivo : styles.segVacio}`}/>
+                        <div key={i} className={`${styles.modalProgresoSeg} ${i < preguntaIdx ? styles.segHecho : i === preguntaIdx ? styles.segActivo : styles.segVacio}`}/>
                       ))}
                     </div>
                     <span className={styles.modalProgresoNum}>{preguntaIdx + 1} / {preguntasActivas.length}</span>
@@ -1074,24 +1115,14 @@ const siguienteJornada = todosFinalizados
                   <div className={styles.cronRow}>
                     <div className={styles.cronDisplay}>
                       <span className={styles.cronTime} style={{ color:cronColor }}>{pad(mins)}:{pad(secs)}</span>
-                      <span className={styles.cronLbl} style={{ color:cronColor }}>
-                        {!cronActivo ? '⏸ PAUSADO' : tiempoLeft <= 30 ? '⚠ CRÍTICO' : 'TIEMPO'}
-                      </span>
+                      <span className={styles.cronLbl} style={{ color:cronColor }}>{!cronActivo ? '⏸ PAUSADO' : tiempoLeft <= 30 ? '⚠ CRÍTICO' : 'TIEMPO'}</span>
                     </div>
-                    <div className={styles.cronBarWrap}>
-                      <div className={styles.cronBarFill} style={{ width:`${pctCron*100}%`, background:cronColor }}/>
-                    </div>
-                    {!cronActivo && (
-                      <button className={styles.btnActivar} onClick={() => setCronActivo(true)}>
-                        ▶ Estoy listo
-                      </button>
-                    )}
+                    <div className={styles.cronBarWrap}><div className={styles.cronBarFill} style={{ width:`${pctCron*100}%`, background:cronColor }}/></div>
+                    {!cronActivo && <button className={styles.btnActivar} onClick={() => setCronActivo(true)}>▶ Estoy listo</button>}
                   </div>
 
                   <AnimatePresence mode="wait">
-                    <motion.div key={`preg-${preguntaIdx}`} className={styles.preguntaWrap}
-                      initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }}
-                      exit={{ opacity:0, x:-20 }} transition={{ duration:0.22 }}>
+                    <motion.div key={`preg-${preguntaIdx}`} className={styles.preguntaWrap} initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }} exit={{ opacity:0, x:-20 }} transition={{ duration:0.22 }}>
                       <div className={styles.preguntaCat}>{preguntasActivas[preguntaIdx]?.categoria}</div>
                       <div className={styles.preguntaTexto}>{preguntasActivas[preguntaIdx]?.texto}</div>
                       <div className={styles.opcionesGrid}>
@@ -1099,22 +1130,11 @@ const siguienteJornada = todosFinalizados
                           const letras = ['A','B','C','D','E','F'];
                           const isSel  = seleccion === op.id;
                           return (
-                            <motion.button key={op.id}
-                              className={`${styles.opcionBtn} ${isSel ? styles.seleccionada : ''}`}
-                              onClick={() => { if (!confirmando) setSeleccion(op.id); }}
-                              disabled={confirmando}
-                              initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
-                              transition={{ delay:i * 0.05 }}
-                              whileHover={!confirmando ? { scale:1.01 } : {}}
-                              whileTap={!confirmando  ? { scale:0.99 } : {}}>
+                            <motion.button key={op.id} className={`${styles.opcionBtn} ${isSel ? styles.seleccionada : ''}`} onClick={() => { if (!confirmando) setSeleccion(op.id); }} disabled={confirmando} initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }} transition={{ delay:i * 0.05 }} whileHover={!confirmando ? { scale:1.01 } : {}} whileTap={!confirmando  ? { scale:0.99 } : {}}>
                               <div className={styles.opcionLetra}>{letras[i] || String(i+1)}</div>
                               <span className={styles.opcionTexto}>{op.texto}</span>
                               {op.cuota && <span className={styles.opcionCuota}>{op.cuota}</span>}
-                              {isSel && (
-                                <motion.div className={styles.opcionCheck}
-                                  initial={{ scale:0 }} animate={{ scale:1 }}
-                                  transition={{ type:'spring', stiffness:400 }}>✓</motion.div>
-                              )}
+                              {isSel && <motion.div className={styles.opcionCheck} initial={{ scale:0 }} animate={{ scale:1 }} transition={{ type:'spring', stiffness:400 }}>✓</motion.div>}
                             </motion.button>
                           );
                         })}
@@ -1123,20 +1143,13 @@ const siguienteJornada = todosFinalizados
                   </AnimatePresence>
 
                   <div className={styles.modalFooter}>
-                    <button className={styles.btnConfirmar}
-                      onClick={confirmarOpcion}
-                      disabled={!seleccion || confirmando || !cronActivo}>
-                      {confirmando ? 'Guardando...'
-                        : preguntaIdx < preguntasActivas.length - 1
-                          ? <><CheckCircle size={16}/> Confirmar y siguiente</>
-                          : <><Trophy size={16}/> Sellar predicción</>}
+                    <button className={styles.btnConfirmar} onClick={confirmarOpcion} disabled={!seleccion || confirmando || !cronActivo}>
+                      {confirmando ? 'Guardando...' : preguntaIdx < preguntasActivas.length - 1 ? <><CheckCircle size={16}/> Confirmar y siguiente</> : <><Trophy size={16}/> Sellar predicción</>}
                     </button>
                   </div>
                 </>
               ) : (
-                <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', padding:32, color:'rgba(255,255,255,0.3)', fontSize:12 }}>
-                  Preparando preguntas...
-                </div>
+                <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', padding:32, color:'rgba(255,255,255,0.3)', fontSize:12 }}>Preparando preguntas...</div>
               )}
             </motion.div>
           </motion.div>
