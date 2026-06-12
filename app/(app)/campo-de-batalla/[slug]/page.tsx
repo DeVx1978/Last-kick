@@ -751,7 +751,7 @@ const siguienteJornada = todosFinalizados
           </button>
           <div className={styles.topbarLogo}>
             {!logoErr
-              ? <img src="/img/kicklast02.png" alt="Kick Last" onError={() => setLogoErr(true)}/>
+              ? <img src="/img/logo12.png" alt="Kick Last" onError={() => setLogoErr(true)}/>
               : <span className={styles.topbarLogoFb}>KICK LAST</span>}
           </div>
         </div>
@@ -1058,7 +1058,7 @@ const siguienteJornada = todosFinalizados
   flex: 1,
   minHeight: 120,
 }}>
-  <img src="/img/kick1.jpg" alt="Promo" style={{
+  <img src="/img/kick55.png" alt="Promo" style={{
     width: '100%', height: '100%', objectFit: 'cover', display: 'block',
     opacity: 0.75, transition: '0.3s',
   }} />

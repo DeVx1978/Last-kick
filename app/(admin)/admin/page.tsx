@@ -1493,7 +1493,7 @@ status: formEdicionPartido.status,
       <div className="ad-root">
         <aside className={`sb ${sideOpen?'open':''}`}>
           <div className="sb-logo">
-            {!logoErr?<img src="/img/kicklast02.png" alt="KL" onError={()=>setLogoErr(true)}/>:<span className="sb-logo-fb">KL</span>}
+            {!logoErr?<img src="/img/logo12.png" alt="KL" onError={()=>setLogoErr(true)}/>:<span className="sb-logo-fb">KL</span>}
             <span className="sb-badge">ADMIN</span>
           </div>
           <nav className="sb-nav">

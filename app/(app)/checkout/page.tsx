@@ -256,7 +256,7 @@ export default function CheckoutPage() {
           </button>
           <div style={{width:1,height:14,background:'rgba(255,255,255,.08)'}}/>
           {!logoErr
-            ?<img src="/img/kicklast02.png" alt="Kick Last" style={{height:22}} onError={()=>setLogoErr(true)}/>
+            ?<img src="/img/logo12.png" alt="Kick Last" style={{height:22}} onError={()=>setLogoErr(true)}/>
             :<span style={{fontFamily:"'Oswald',sans-serif",fontSize:14,fontWeight:700,color:'#8dc63f',letterSpacing:2}}>KICK LAST</span>
           }
           <span style={{fontFamily:"'Oswald',sans-serif",fontSize:9,color:'rgba(255,255,255,.2)',letterSpacing:2}}>· CHECKOUT SEGURO</span>

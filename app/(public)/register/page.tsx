@@ -346,7 +346,7 @@ function RegisterPortalInner({ initialRef }: { initialRef: string }) {
           <button className="rp-close" onClick={() => router.push('/')} aria-label="Cerrar"><X size={18} /></button>
 
           <div className="rp-header">
-            <img src="/img/kicklast02.png" alt="KICK LAST" className="rp-logo"
+            <img src="/img/logo12.png" alt="KICK LAST" className="rp-logo"
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
             <div className="rp-subtitle">Registro de nuevo jugador</div>
           </div>

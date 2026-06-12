@@ -174,7 +174,7 @@ export default function RecargarPage() {
       <aside className="rc-sidebar" style={{background:'#0b0e1a',borderRight:'1px solid rgba(255,255,255,.05)',display:'flex',flexDirection:'column',height:'100vh',position:'sticky',top:0,zIndex:100}}>
         <div style={{padding:'20px 20px 14px',borderBottom:'1px solid rgba(255,255,255,.05)'}}>
           {!logoErr
-            ?<img src="/img/kicklast02.png" alt="Kick Last" style={{height:22}} onError={()=>setLogoErr(true)}/>
+            ?<img src="/img/logo12.png" alt="Kick Last" style={{height:22}} onError={()=>setLogoErr(true)}/>
             :<span style={{fontFamily:"'Oswald',sans-serif",fontSize:16,fontWeight:700,color:'#8dc63f',letterSpacing:2}}>KICK LAST</span>
           }
         </div>

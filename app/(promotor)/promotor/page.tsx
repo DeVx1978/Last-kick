@@ -582,7 +582,7 @@ export default function PromotorPage() {
         {/* ═══ SIDEBAR ═══ */}
         <aside className={`sb ${sideOpen?"open":""}`}>
           <div className="sb-logo">
-            <img src="/img/kicklast02.png" alt="KickLast"
+            <img src="/img/logo12.png" alt="KickLast"
               onError={e=>{(e.currentTarget as HTMLImageElement).style.display="none";}}/>
             <div className="sb-logo-txt" style={{display:"none"}}>KICK LAST</div>
             <div className="sb-badge">Panel Promotor</div>

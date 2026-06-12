@@ -201,7 +201,7 @@ setTimeout(() => router.push(destino), 1200);
           </button>
 
           <div className="lp-header">
-            <img src="/img/kicklast02.png" alt="KICK LAST" className="lp-logo"
+            <img src="/img/logo12.png" alt="KICK LAST" className="lp-logo"
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
             <div className="lp-subtitle">
               {isRecovering ? 'Recuperar contraseña' : 'Iniciar sesión'}

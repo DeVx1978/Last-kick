@@ -126,7 +126,7 @@ export default function Footer() {
         <div className="lk-footer-brand">
           {!mainLogoError && (
             <img
-              src="/img/kicklast02.png"
+              src="/img/logo12.png"
               alt="Kick Last"
               className="lk-brand-logo"
               onError={() => setMainLogoError(true)}

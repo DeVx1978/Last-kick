@@ -249,7 +249,7 @@ export default function HeroLastKick() {
         <div className="lk-nav-brand">
           {/* Usa img si tienes logo, o texto fallback */}
           <img
-            src="/img/kicklast02.png"
+            src="/img/logo12.png"
             alt="Kick Last"
             className="lk-nav-logo-img"
             onError={(e) => { (e.target as HTMLImageElement).style.display="none"; }}
